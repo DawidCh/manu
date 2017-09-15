@@ -1,0 +1,38 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.StatusBar?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.chojnacki.manufaktura.manuregiony.gui.controllers.MainViewController">
+    <top>
+        <HBox id="top" alignment="CENTER">
+            <Text text="ManuRegiony" id="title"/>
+        </HBox>
+    </top>
+    <center>
+        <GridPane alignment="CENTER" vgap="10" hgap="10" styleClass="grid">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT"/>
+                <ColumnConstraints halignment="LEFT"/>
+            </columnConstraints>
+            <Button text="Plik z numerami tablic" id="inputFileChooser" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"
+                    onAction="#openDialog" fx:id="fileChooserDialog"/>
+            <TextField id="textField" fx:id="platesText" minWidth="550" GridPane.columnIndex="2" GridPane.rowIndex="0"
+                       GridPane.columnSpan="2" editable="false"/>
+            <Text id="optionalText" text="Opcjonalny tekst" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
+            <TextField id="textField" fx:id="optionalText" minWidth="550" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                <tooltip>
+                    <Tooltip text="Maksymalnie 15 znaków"/>
+                </tooltip>
+            </TextField>
+            <Text id="optionalText" text="Zakres przetwarzania" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"/>
+            <ComboBox fx:id="processingTypeCombo" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.columnSpan="2" promptText="Zakres przetwarzania"/>
+            <Button id="start" fx:id="startButton" disable="true" GridPane.columnIndex="0" GridPane.rowIndex="3"
+                    text="Start" onAction="#startCalculations"/>
+            <Button fx:id="exit" GridPane.columnIndex="1" GridPane.rowIndex="3" text="Wyjście" onAction="#exit"/>
+        </GridPane>
+    </center>
+    <bottom>
+        <StatusBar fx:id="statusBar"/>
+    </bottom>
+</BorderPane>

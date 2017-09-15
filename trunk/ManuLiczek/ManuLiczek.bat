@@ -1,0 +1,1 @@
+java -Xss40m -jar "dist\ManuLiczek.jar"
