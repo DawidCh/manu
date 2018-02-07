@@ -384,10 +384,11 @@ public class ManuLiczekMainView extends FrameView {
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
         mainPanel.add(periodLabel, gridBagConstraints);
 
+        periodTextField.setName("periodTextField"); // NOI18N
+        periodTextField.setText(resourceMap.getString("periodTextField.text")); // NOI18N
+        periodTextField.setPreferredSize(new java.awt.Dimension(12, 20));
         periodTextField.setMaximumSize(new java.awt.Dimension(12, 20));
         periodTextField.setMinimumSize(new java.awt.Dimension(12, 20));
-        periodTextField.setName("periodTextField"); // NOI18N
-        periodTextField.setPreferredSize(new java.awt.Dimension(12, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
