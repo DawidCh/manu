@@ -84,7 +84,7 @@ public class ManuLiczekMain extends SingleFrameApplication {
     }
 
     public static String getParametrizedString(String parametrizedKey, Class objectClass, Object... parameters) {
-        return (String) Application.getInstance().getContext().getResourceMap(objectClass).getString(parametrizedKey, parameters);
+        return Application.getInstance().getContext().getResourceMap(objectClass).getString(parametrizedKey, parameters);
     }
 
     public void setInputImageFile(InputStream inputImageFile) {
@@ -116,12 +116,12 @@ public class ManuLiczekMain extends SingleFrameApplication {
     }
     private static final Logger logger = Logger.getLogger("rootLogger");
 
-    public static void tieSystemOutAndErrToLog() {
+    private static void tieSystemOutAndErrToLog() {
         System.setOut(createLoggingProxy(System.out));
         System.setErr(createLoggingProxy(System.err));
     }
 
-    public static PrintStream createLoggingProxy(final PrintStream realPrintStream) {
+    private static PrintStream createLoggingProxy(final PrintStream realPrintStream) {
         return new PrintStream(realPrintStream) {
 
             @Override
