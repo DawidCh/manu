@@ -110,7 +110,7 @@ public class ProcessingManager extends Task<Void, Void> {
         String shopId;
         Shop shop;
         List<String> shopsAllowedIds = shopCollector.getShopsAllowed();
-        List<String> shopsIdToPaint = new ArrayList<String>();
+        List<String> shopsIdToPaint = new ArrayList<>();
         List<String> shopsWCoordinates = new ArrayList<String>(shopCollector.getShopsCurrentFloorWithoutCoordinates());
         filterShopsWCoordinates(shopsWCoordinates);
         shopsIdToPaint.addAll(shopsAllowedIds);

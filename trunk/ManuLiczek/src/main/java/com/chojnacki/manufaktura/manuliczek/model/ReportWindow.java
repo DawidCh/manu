@@ -49,11 +49,11 @@ public class ReportWindow extends JDialog {
         reportContent = new javax.swing.JTextArea();
         closeReport = new javax.swing.JButton();
 
-        setName("Form"); // NOI18N
+        setName("Form");
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/chojnacki/manufaktura/manuliczek/model/resources/ReportWindow"); // NOI18N
-        scrollPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("scrollPanel.border.title"))); // NOI18N
-        scrollPanel.setName("scrollPanel"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("com/chojnacki/manufaktura/manuliczek/model/resources/ReportWindow");
+        scrollPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(bundle.getString("scrollPanel.border.title")));
+        scrollPanel.setName("scrollPanel");
 
         reportContent.setColumns(20);
         reportContent.setEditable(false);
@@ -62,11 +62,11 @@ public class ReportWindow extends JDialog {
         reportContent.setWrapStyleWord(true);
         reportContent.setMaximumSize(new java.awt.Dimension(142, 87));
         reportContent.setMinimumSize(new java.awt.Dimension(142, 87));
-        reportContent.setName("reportContent"); // NOI18N
+        reportContent.setName("reportContent");
         scrollPanel.setViewportView(reportContent);
 
-        closeReport.setText(bundle.getString("close.text")); // NOI18N
-        closeReport.setName("closeReport"); // NOI18N
+        closeReport.setText(bundle.getString("close.text"));
+        closeReport.setName("closeReport");
         closeReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeReportActionPerformed(evt);
@@ -95,15 +95,15 @@ public class ReportWindow extends JDialog {
 
         pack();
     }// </editor-fold>
-    private void closeReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeReportActionPerformed
+    private void closeReportActionPerformed(java.awt.event.ActionEvent evt) {
         dispose();
-    }//GEN-LAST:event_closeReportActionPerformed
+    }
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify
     private javax.swing.JButton closeReport;
     private javax.swing.JTextArea reportContent;
     private javax.swing.JScrollPane scrollPanel;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration
 
 }

@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import static com.chojnacki.manufaktura.manuliczek.model.Level.FIRST;
+
 /**
  *
  * @author kalosh
@@ -40,10 +42,10 @@ public class ShopCollector {
     }
 
     public Map<String, Shop> collectShops() throws Exception {
-        shops = new HashMap<String, Shop>();
-        shopsCurrentFloorWithoutCoordinates = new ArrayList<String>();
-        shopAllFloorWithoutCoordinates = new ArrayList<String>();
-        shopsAllowed = new ArrayList<String>();
+        shops = new HashMap<>();
+        shopsCurrentFloorWithoutCoordinates = new ArrayList<>();
+        shopAllFloorWithoutCoordinates = new ArrayList<>();
+        shopsAllowed = new ArrayList<>();
 
         Workbook workbook = Workbook.getWorkbook(this.inputDataHolder.getInputFile());
         Sheet sheet = workbook.getSheet(this.inputDataHolder.getSheetName());
@@ -51,7 +53,7 @@ public class ShopCollector {
         PropertyResourceBundle resources = new PropertyResourceBundle(ManuLiczekMain.getApplication().getInputLocales());
         PropertyResourceBundle reserveResources = new PropertyResourceBundle(ManuLiczekMain.getApplication().getReserveInputLocales());
 
-        Shop shop = null;
+        Shop shop;
         String shopId;
         String percentageColumn;
         String companiesName;
@@ -119,19 +121,12 @@ public class ShopCollector {
         } else {
             String id = shopId.substring(2);
             int intId = Integer.valueOf(id);
-            result = !(intId >= 200 ^ ManuLiczekMain.getApplication().getFloor());
+            result = intId >= 200 && ManuLiczekMain.getApplication().getFloor() == FIRST;
         }
         return result;
     }
 
     protected boolean  shopHasCoordinates(String shopId, ResourceBundle resources) {
-        boolean result = false;
-        if (resources.containsKey(shopId)) {
-            String shopCoordinates = (String) resources.getObject(shopId);
-            if (shopCoordinates != null && !shopCoordinates.equals("")) {
-                result = true;
-            }
-        }
-        return result;
+        return resources.containsKey(shopId) && !"".equals(resources.getString(shopId));
     }
 }

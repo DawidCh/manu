@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
+
+import com.chojnacki.manufaktura.manuliczek.model.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.jdesktop.application.Application;
@@ -146,7 +148,7 @@ public class ManuLiczekMain extends SingleFrameApplication {
         return result;
     }
 
-    public boolean getFloor() {
+    public Level getFloor() {
         return mainWindow.getFloor();
     }
 }

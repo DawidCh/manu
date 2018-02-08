@@ -3,7 +3,7 @@
  
   <groupId>com.chojnacki.manufaktura</groupId>
   <artifactId>manuliczek</artifactId>
-  <version>1.1</version>
+  <version>2.2</version>
     <dependencies>
         <dependency>
             <groupId>net.java.dev.appframework</groupId>
