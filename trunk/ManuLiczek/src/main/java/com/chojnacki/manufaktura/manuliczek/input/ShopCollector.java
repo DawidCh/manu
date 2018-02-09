@@ -64,7 +64,7 @@ public class ShopCollector {
             if (shopId != null) {
                 if(shopId.matches("H\\w{1,2}\\d{2,3}\\w?")) {
                     shopCountInDocument++;
-                    if (shopId.matches("H[M|B]\\d{3}")) {
+                    if (shopId.matches("H[M|B][F|R]?\\d{2,3}")) {
                         if (!"".equals(companiesName) && !"".equals(percentageColumn)) {
                             shop = new Shop(shopId, companiesName);
                             if (percentageColumn.endsWith("%")) {
@@ -115,14 +115,14 @@ public class ShopCollector {
     }
 
     protected boolean currentFloor(String shopId) {
-        boolean result;
-        if (shopId.matches("HM\\d{3}")) {
-            result = true;
-        } else {
-            String id = shopId.substring(2);
-            int intId = Integer.valueOf(id);
-            result = intId >= 200 && ManuLiczekMain.getApplication().getFloor() == FIRST;
-        }
+        boolean result = false;
+//        if (shopId.matches("HM\\d{3}")) {
+//            result = true;
+//        } else {
+//            String id = shopId.substring(2);
+//            int intId = Integer.valueOf(id);
+//            result = intId >= 200 && ManuLiczekMain.getApplication().getFloor() == FIRST;
+//        }
         return result;
     }
 

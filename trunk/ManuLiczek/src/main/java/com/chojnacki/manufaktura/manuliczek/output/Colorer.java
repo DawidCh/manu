@@ -72,7 +72,7 @@ public class Colorer {
     }
 
     public void colorShop(Shop shop) {
-        visitedPixels = new HashSet<Point>();
+        visitedPixels = new HashSet<>();
         regionGrow(shop.getX(), shop.getY(), shop.getPercentageColor());
     }
 
@@ -159,12 +159,12 @@ public class Colorer {
             idGraphics.drawString(shopId, 0, 7);
             mainGraphic.drawImage(idImage, shop.getX(), shop.getY(), null);
         } else {
-            BufferedImage idImage = new BufferedImage(26, 7, BufferedImage.TYPE_INT_RGB);
+            BufferedImage idImage = new BufferedImage(27, 7, BufferedImage.TYPE_INT_RGB);
             Graphics2D idGraphics = idImage.createGraphics();
             idGraphics.setBackground(new Color(shop.getPercentageColor()));
             idGraphics.setFont(idsFont);
             idGraphics.setColor(idsFontColor);
-            idGraphics.clearRect(0, 0, 26, 7);
+            idGraphics.clearRect(0, 0, 27, 7);
             idGraphics.drawString(shopId, 0, 7);
             mainGraphic.drawImage(idImage, shop.getX()-10, shop.getY() - 7, null);
             if (shop.getShopId().startsWith("HM")) {
