@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 
 import com.chojnacki.manufaktura.manuliczek.model.Level;
+import com.chojnacki.manufaktura.manuliczek.model.Place;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.jdesktop.application.Application;
@@ -150,5 +151,9 @@ public class ManuLiczekMain extends SingleFrameApplication {
 
     public Level getFloor() {
         return mainWindow.getFloor();
+    }
+
+    public Place getPlace() {
+        return mainWindow.getPlace();
     }
 }

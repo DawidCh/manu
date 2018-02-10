@@ -6,6 +6,7 @@ package com.chojnacki.manufaktura.manuliczek.output;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import com.chojnacki.manufaktura.manuliczek.model.ColorHolder;
+import com.chojnacki.manufaktura.manuliczek.model.Place;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
 import java.awt.Color;
 import java.awt.Font;
@@ -13,11 +14,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
+
 import org.jdesktop.application.Application;
+
+import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
 
 /**
  *
@@ -33,7 +34,6 @@ public class Colorer {
     private int cellNameWidth;
     private int cellXMargin;
     private int cellYMargin;
-    private int cellsPerRow;
     private int maxNameLength;
     private int rows;
     private int tableWidth;
@@ -48,12 +48,9 @@ public class Colorer {
         cellNameWidth = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellNameWidth"));
         cellXMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellXMargin"));
         cellYMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellYMargin"));
-        cellsPerRow = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("shopsPerRow"));
         maxNameLength = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("maxNameLength"));
         fillTable = Boolean.parseBoolean(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("fillTableVertical"));
-        if (cellsPerRow > 8) {
-            throw new Exception("CellsPerRow value set in " + Colorer.class.getName() + " properties file is greater than " + cellsPerRow);
-        }
+
         Properties fontSettings = ManuLiczekMain.getFontSettings();
         String fontName = (String) fontSettings.get("fontName");
         int fontSize = Integer.parseInt((String) fontSettings.get("fontSize"));
@@ -184,7 +181,7 @@ public class Colorer {
         }
     }
 
-    public void paintShopInTable(Shop shop, int shopsCount, int currentCounter, Graphics2D graphic) {
+    public void paintShopInTable(Shop shop, int currentCounter, Graphics2D graphic) {
         int currentRow;
         int currentColumn;
 
@@ -192,8 +189,8 @@ public class Colorer {
             currentRow = currentCounter % rows;
             currentColumn = (int) Math.floor(currentCounter / rows);
         } else {
-            currentRow = (int) Math.floor(currentCounter / cellsPerRow);
-            currentColumn = currentCounter % cellsPerRow;
+            currentRow = (int) Math.floor(currentCounter / getCellsPerRow());
+            currentColumn = currentCounter % getCellsPerRow();
         }
 
         //horizontal line
@@ -220,8 +217,8 @@ public class Colorer {
     }
 
     public void setShopsCount(int shopsCount) {
-        rows = (int) Math.ceil((float)shopsCount / (float)cellsPerRow);
-        tableWidth = cellsPerRow * (cellIdWidth + cellNameWidth);
+        rows = (int) Math.ceil((float)shopsCount / (float)getCellsPerRow());
+        tableWidth = getCellsPerRow() * (cellIdWidth + cellNameWidth);
         tableHeight = rows * cellHeight;
     }
 
@@ -248,7 +245,26 @@ public class Colorer {
 
             Graphics2D manuGraphics = manuImage.createGraphics();
 
-            manuGraphics.drawImage(periodImage, 1345, 631, null);
+            int periodPosition[] = getPeriodPosition();
+            manuGraphics.drawImage(periodImage, periodPosition[0], periodPosition[1], null);
+        }
+    }
+
+    private int[] getPeriodPosition() {
+        int yPosition;
+        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
+            yPosition = 75;
+        } else {
+            yPosition = 631;
+        }
+        return new int[] {1345, yPosition};
+    }
+
+    public int getCellsPerRow() {
+        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
+            return 3;
+        } else {
+            return 8;
         }
     }
 }

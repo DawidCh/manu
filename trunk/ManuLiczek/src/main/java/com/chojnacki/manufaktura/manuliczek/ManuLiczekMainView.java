@@ -153,6 +153,7 @@ public class ManuLiczekMainView extends FrameView {
         levelLabel = new javax.swing.JLabel();
         groundRadio = new javax.swing.JRadioButton();
         levelRadio = new javax.swing.JRadioButton();
+        level2Radio = new javax.swing.JRadioButton();
         galleryRadio = new javax.swing.JRadioButton();
         outsideRadio = new javax.swing.JRadioButton();
         periodLabel = new javax.swing.JLabel();
@@ -182,7 +183,7 @@ public class ManuLiczekMainView extends FrameView {
         exit.setName("exit");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         mainPanel.add(exit, gridBagConstraints);
 
@@ -191,7 +192,7 @@ public class ManuLiczekMainView extends FrameView {
         beginProcessing.setName("beginProcessing");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 5);
         mainPanel.add(beginProcessing, gridBagConstraints);
@@ -226,7 +227,7 @@ public class ManuLiczekMainView extends FrameView {
         outputFileLabel.setName("outputFileLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 5, 5);
         mainPanel.add(outputFileLabel, gridBagConstraints);
@@ -235,7 +236,7 @@ public class ManuLiczekMainView extends FrameView {
         inputFileLabel.setName("inputFileLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 2, 5);
         mainPanel.add(inputFileLabel, gridBagConstraints);
@@ -300,7 +301,7 @@ public class ManuLiczekMainView extends FrameView {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 2, 2);
         mainPanel.add(inputFileTextField, gridBagConstraints);
@@ -320,7 +321,7 @@ public class ManuLiczekMainView extends FrameView {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(2, 5, 5, 2);
         mainPanel.add(outputFileTextField, gridBagConstraints);
@@ -339,7 +340,7 @@ public class ManuLiczekMainView extends FrameView {
         groundRadio.setText(resourceMap.getString("groundRadio.text"));
         groundRadio.setName("groundRadio");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         mainPanel.add(groundRadio, gridBagConstraints);
@@ -348,28 +349,45 @@ public class ManuLiczekMainView extends FrameView {
         levelRadio.setText(resourceMap.getString("levelRadio.text"));
         levelRadio.setName("levelRadio");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         mainPanel.add(levelRadio, gridBagConstraints);
+
+        levelSelectorRadioGroup.add(level2Radio);
+        level2Radio.setText(resourceMap.getString("level2Radio.text"));
+        level2Radio.setName("level2Radio");
+        level2Radio.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        mainPanel.add(level2Radio, gridBagConstraints);
 
         indoorSelectorRadioGroup.add(galleryRadio);
         galleryRadio.setSelected(true);
         galleryRadio.setText(resourceMap.getString("galleryRadio.text"));
         galleryRadio.setName("galleryRadio");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        galleryRadio.addActionListener(x -> {
+            level2Radio.setEnabled(!galleryRadio.isSelected());
+            if(level2Radio.isSelected()) {
+                levelRadio.setSelected(true);
+            }
+        });
         mainPanel.add(galleryRadio, gridBagConstraints);
 
         indoorSelectorRadioGroup.add(outsideRadio);
         outsideRadio.setText(resourceMap.getString("outsideRadio.text"));
         outsideRadio.setName("outsideRadio");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        outsideRadio.addActionListener(x -> level2Radio.setEnabled(outsideRadio.isSelected()));
         mainPanel.add(outsideRadio, gridBagConstraints);
 
         periodLabel.setText(resourceMap.getString("periodLabel.text"));
@@ -582,6 +600,7 @@ public class ManuLiczekMainView extends FrameView {
                     percentageTextField.setEnabled(false);
                     sheetNameTextField.setEnabled(false);
                     levelRadio.setEnabled(false);
+                    level2Radio.setEnabled(false);
                     groundRadio.setEnabled(false);
                     outsideRadio.setEnabled(false);
                     galleryRadio.setEnabled(false);
@@ -601,6 +620,7 @@ public class ManuLiczekMainView extends FrameView {
                     groundRadio.setEnabled(true);
                     outsideRadio.setEnabled(true);
                     galleryRadio.setEnabled(true);
+                    level2Radio.setEnabled(outsideRadio.isSelected());
                     periodTextField.setEnabled(true);
                 }
             };
@@ -616,7 +636,7 @@ public class ManuLiczekMainView extends FrameView {
     }
 
     public Level getFloor() {
-        return levelRadio.isSelected() ? FIRST : GROUND;
+        return levelRadio.isSelected() ? FIRST : level2Radio.isSelected() ? SECOND : GROUND;
     }
 
     public Place getPlace() {
@@ -651,6 +671,7 @@ public class ManuLiczekMainView extends FrameView {
     private javax.swing.JFormattedTextField inputFileTextField;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JRadioButton levelRadio;
+    private javax.swing.JRadioButton level2Radio;
     private javax.swing.JRadioButton outsideRadio;
     private javax.swing.ButtonGroup levelSelectorRadioGroup;
     private javax.swing.ButtonGroup indoorSelectorRadioGroup;
