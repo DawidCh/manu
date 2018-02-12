@@ -38,8 +38,6 @@
         <directory>target</directory>
         <outputDirectory>target/classes</outputDirectory>
         <finalName>${artifactId}-${version}</finalName>
-        <testOutputDirectory>target/test-classes</testOutputDirectory>
-        <sourceDirectory>src/</sourceDirectory>
 
         <plugins>
             <plugin>
@@ -57,23 +55,23 @@
                 </configuration>
             </plugin>
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.0.2</version>
-            <executions>
-                <execution>
-                    <id>copy-dependencies</id>
-                    <phase>package</phase>
-                    <goals>
-                        <goal>copy-dependencies</goal>
-                    </goals>
-                    <configuration>
-                        <outputDirectory>
-                            ${project.build.directory}
-                        </outputDirectory>
-                    </configuration>
-                </execution>
-            </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
