@@ -31,6 +31,7 @@ import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
  */
 public class ProcessingManager extends Task<Void, Void> {
 
+    private static final int TABLE_IMAGE_OFFSET = 200;
     /**
      * Property which holds list with all collected shops.
      */
@@ -137,9 +138,9 @@ public class ProcessingManager extends Task<Void, Void> {
 
     private int[] getResultImageSize(BufferedImage tableImage) {
         int x = colorer.getManuImage().getWidth();
-        int y = colorer.getManuImage().getHeight();
-        if (ManuLiczekMain.getApplication().getPlace().equals(GALLERY)) {
-            y += tableImage.getHeight();
+        int y = colorer.getManuImage().getHeight() + tableImage.getHeight();
+        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
+            y = Math.max(y - TABLE_IMAGE_OFFSET, y);
         }
         return new int[] {x, y};
     }
@@ -149,7 +150,7 @@ public class ProcessingManager extends Task<Void, Void> {
         int y = colorer.getManuImage().getHeight() - 1;
         if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
             x = 860;
-            y = 200;
+            y = TABLE_IMAGE_OFFSET;
         }
         return new int[] {x, y};
     }
