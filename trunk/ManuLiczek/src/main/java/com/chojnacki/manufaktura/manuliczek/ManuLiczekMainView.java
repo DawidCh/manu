@@ -141,11 +141,13 @@ public class ManuLiczekMainView extends FrameView {
         idColumnLabel = new javax.swing.JLabel();
         companiesLabel = new javax.swing.JLabel();
         percentageLabel = new javax.swing.JLabel();
+        cousineLabel = new javax.swing.JLabel();
         outputFileLabel = new javax.swing.JLabel();
         inputFileLabel = new javax.swing.JLabel();
         sheetNameLabel = new javax.swing.JLabel();
         sheetNameTextField = new javax.swing.JFormattedTextField();
         percentageTextField = new javax.swing.JFormattedTextField();
+        cousineTextField = new javax.swing.JFormattedTextField();
         companiesNameTextField = new javax.swing.JFormattedTextField();
         idColumnTextField = new javax.swing.JFormattedTextField();
         inputFileTextField = new javax.swing.JFormattedTextField();
@@ -171,81 +173,76 @@ public class ManuLiczekMainView extends FrameView {
         levelSelectorRadioGroup = new javax.swing.ButtonGroup();
         indoorSelectorRadioGroup = new javax.swing.ButtonGroup();
 
-        mainPanel.setMaximumSize(new java.awt.Dimension(578, 280));
-        mainPanel.setMinimumSize(new java.awt.Dimension(578, 280));
+        mainPanel.setMaximumSize(new java.awt.Dimension(578, 300));
+        mainPanel.setMinimumSize(new java.awt.Dimension(578, 300));
         mainPanel.setName("mainPanel");
-        mainPanel.setPreferredSize(new java.awt.Dimension(578, 280));
+        mainPanel.setPreferredSize(new java.awt.Dimension(578, 300));
         mainPanel.setLayout(new java.awt.GridBagLayout());
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(com.chojnacki.manufaktura.manuliczek.ManuLiczekMain.class).getContext().getActionMap(ManuLiczekMainView.class, this);
-        exit.setAction(actionMap.get("quit"));
-        exit.setMinimumSize(new java.awt.Dimension(0, 0));
-        exit.setName("exit");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        mainPanel.add(exit, gridBagConstraints);
-
-        beginProcessing.setAction(actionMap.get("beginProcessing"));
-        beginProcessing.setMinimumSize(new java.awt.Dimension(0, 0));
-        beginProcessing.setName("beginProcessing");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 5);
-        mainPanel.add(beginProcessing, gridBagConstraints);
-
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.chojnacki.manufaktura.manuliczek.ManuLiczekMain.class).getContext().getResourceMap(ManuLiczekMainView.class);
+        int gridY = 0;
+
         idColumnLabel.setText(resourceMap.getString("idColumnLabel.text"));
         idColumnLabel.setName("idColumnLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = gridY;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
         mainPanel.add(idColumnLabel, gridBagConstraints);
+
+        idColumnTextField.setText(resourceMap.getString("idColumnTextField.text"));
+        idColumnTextField.setMaximumSize(new java.awt.Dimension(13, 20));
+        idColumnTextField.setName("idColumnTextField");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 20);
+        mainPanel.add(idColumnTextField, gridBagConstraints);
+
+
+        companiesNameTextField.setText(resourceMap.getString("companiesNameTextField.text"));
+        companiesNameTextField.setName("companiesNameTextField");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = gridY;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 20);
+        mainPanel.add(companiesNameTextField, gridBagConstraints);
 
         companiesLabel.setText(resourceMap.getString("companiesLabel.text"));
         companiesLabel.setName("companiesLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = gridY++;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
         mainPanel.add(companiesLabel, gridBagConstraints);
+
+        percentageTextField.setText(resourceMap.getString("percentageTextField.text"));
+        percentageTextField.setName("percentageTextField");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = gridY;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 20);
+        mainPanel.add(percentageTextField, gridBagConstraints);
 
         percentageLabel.setText(resourceMap.getString("percentageLabel.text"));
         percentageLabel.setName("percentageLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = gridY++;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
         mainPanel.add(percentageLabel, gridBagConstraints);
-
-        outputFileLabel.setText(resourceMap.getString("outputFileLabel.text"));
-        outputFileLabel.setName("outputFileLabel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 10, 5, 5);
-        mainPanel.add(outputFileLabel, gridBagConstraints);
-
-        inputFileLabel.setText(resourceMap.getString("inputFileLabel.text"));
-        inputFileLabel.setName("inputFileLabel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 10, 2, 5);
-        mainPanel.add(inputFileLabel, gridBagConstraints);
 
         sheetNameLabel.setText(resourceMap.getString("sheetNameLabel.text"));
         sheetNameLabel.setName("sheetNameLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = gridY;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
         mainPanel.add(sheetNameLabel, gridBagConstraints);
@@ -254,38 +251,121 @@ public class ManuLiczekMainView extends FrameView {
         sheetNameTextField.setName("sheetNameTextField");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = gridY++;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 0);
         mainPanel.add(sheetNameTextField, gridBagConstraints);
 
-        percentageTextField.setText(resourceMap.getString("percentageTextField.text"));
-        percentageTextField.setName("percentageTextField");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 20);
-        mainPanel.add(percentageTextField, gridBagConstraints);
 
-        companiesNameTextField.setText(resourceMap.getString("companiesNameTextField.text"));
-        companiesNameTextField.setName("companiesNameTextField");
+        periodLabel.setText(resourceMap.getString("periodLabel.text"));
+        periodLabel.setName("periodLabel");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = gridY;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 20);
-        mainPanel.add(companiesNameTextField, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
+        mainPanel.add(periodLabel, gridBagConstraints);
 
-        idColumnTextField.setText(resourceMap.getString("idColumnTextField.text"));
-        idColumnTextField.setMaximumSize(new java.awt.Dimension(13, 20));
-        idColumnTextField.setName("idColumnTextField");
+        periodTextField.setName("periodTextField");
+        periodTextField.setText(resourceMap.getString("periodTextField.text"));
+        periodTextField.setPreferredSize(new java.awt.Dimension(12, 20));
+        periodTextField.setMaximumSize(new java.awt.Dimension(12, 20));
+        periodTextField.setMinimumSize(new java.awt.Dimension(12, 20));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 280);
+        mainPanel.add(periodTextField, gridBagConstraints);
+
+
+        indoorSelectorRadioGroup.add(galleryRadio);
+        galleryRadio.setSelected(true);
+        galleryRadio.setText(resourceMap.getString("galleryRadio.text"));
+        galleryRadio.setName("galleryRadio");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = gridY;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        galleryRadio.addActionListener(x -> {
+            level2Radio.setEnabled(!galleryRadio.isSelected());
+            cousineTextField.setEnabled(!galleryRadio.isSelected());
+            if(level2Radio.isSelected()) {
+                levelRadio.setSelected(true);
+            }
+        });
+        mainPanel.add(galleryRadio, gridBagConstraints);
+
+        levelLabel.setText(resourceMap.getString("levelLabel.text"));
+        levelLabel.setName("levelLabel");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = gridY;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        mainPanel.add(levelLabel, gridBagConstraints);
+
+        levelSelectorRadioGroup.add(groundRadio);
+        groundRadio.setSelected(true);
+        groundRadio.setText(resourceMap.getString("groundRadio.text"));
+        groundRadio.setName("groundRadio");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        mainPanel.add(groundRadio, gridBagConstraints);
+
+        levelSelectorRadioGroup.add(levelRadio);
+        levelRadio.setText(resourceMap.getString("levelRadio.text"));
+        levelRadio.setName("levelRadio");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = gridY;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        mainPanel.add(levelRadio, gridBagConstraints);
+
+        indoorSelectorRadioGroup.add(outsideRadio);
+        outsideRadio.setText(resourceMap.getString("outsideRadio.text"));
+        outsideRadio.setName("outsideRadio");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        outsideRadio.addActionListener(x -> {
+            level2Radio.setEnabled(outsideRadio.isSelected());
+            cousineTextField.setEnabled(outsideRadio.isSelected());
+        });
+        mainPanel.add(outsideRadio, gridBagConstraints);
+
+        levelSelectorRadioGroup.add(level2Radio);
+        level2Radio.setText(resourceMap.getString("level2Radio.text"));
+        level2Radio.setName("level2Radio");
+        level2Radio.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        mainPanel.add(level2Radio, gridBagConstraints);
+
+        cousineTextField.setText(resourceMap.getString("cousineTextField.text"));
+        cousineTextField.setName("cousineTextField");
+        cousineTextField.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = gridY;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 20);
-        mainPanel.add(idColumnTextField, gridBagConstraints);
+        mainPanel.add(cousineTextField, gridBagConstraints);
+
+        cousineLabel.setText(resourceMap.getString("cousineTextLabel.text"));
+        cousineLabel.setName("cousineTextLabel");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
+        mainPanel.add(cousineLabel, gridBagConstraints);
 
         inputFileTextField.setBackground(resourceMap.getColor("outputFileTextField.background"));
         inputFileTextField.setEditable(false);
@@ -301,10 +381,28 @@ public class ManuLiczekMainView extends FrameView {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = gridY;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 2, 2);
         mainPanel.add(inputFileTextField, gridBagConstraints);
+
+        inputFileLabel.setText(resourceMap.getString("inputFileLabel.text"));
+        inputFileLabel.setName("inputFileLabel");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 2, 5);
+        mainPanel.add(inputFileLabel, gridBagConstraints);
+
+        outputFileLabel.setText(resourceMap.getString("outputFileLabel.text"));
+        outputFileLabel.setName("outputFileLabel");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = gridY;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(2, 10, 5, 5);
+        mainPanel.add(outputFileLabel, gridBagConstraints);
 
         outputFileTextField.setBackground(resourceMap.getColor("outputFileTextField.background"));
         outputFileTextField.setEditable(false);
@@ -321,96 +419,29 @@ public class ManuLiczekMainView extends FrameView {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = gridY++;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(2, 5, 5, 2);
         mainPanel.add(outputFileTextField, gridBagConstraints);
 
-        levelLabel.setText(resourceMap.getString("levelLabel.text"));
-        levelLabel.setName("levelLabel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        mainPanel.add(levelLabel, gridBagConstraints);
-
-        levelSelectorRadioGroup.add(groundRadio);
-        groundRadio.setSelected(true);
-        groundRadio.setText(resourceMap.getString("groundRadio.text"));
-        groundRadio.setName("groundRadio");
+        exit.setAction(actionMap.get("quit"));
+        exit.setMinimumSize(new java.awt.Dimension(0, 0));
+        exit.setName("exit");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = gridY;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        mainPanel.add(groundRadio, gridBagConstraints);
+        mainPanel.add(exit, gridBagConstraints);
 
-        levelSelectorRadioGroup.add(levelRadio);
-        levelRadio.setText(resourceMap.getString("levelRadio.text"));
-        levelRadio.setName("levelRadio");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        mainPanel.add(levelRadio, gridBagConstraints);
-
-        levelSelectorRadioGroup.add(level2Radio);
-        level2Radio.setText(resourceMap.getString("level2Radio.text"));
-        level2Radio.setName("level2Radio");
-        level2Radio.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        mainPanel.add(level2Radio, gridBagConstraints);
-
-        indoorSelectorRadioGroup.add(galleryRadio);
-        galleryRadio.setSelected(true);
-        galleryRadio.setText(resourceMap.getString("galleryRadio.text"));
-        galleryRadio.setName("galleryRadio");
+        beginProcessing.setAction(actionMap.get("beginProcessing"));
+        beginProcessing.setMinimumSize(new java.awt.Dimension(0, 0));
+        beginProcessing.setName("beginProcessing");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        galleryRadio.addActionListener(x -> {
-            level2Radio.setEnabled(!galleryRadio.isSelected());
-            if(level2Radio.isSelected()) {
-                levelRadio.setSelected(true);
-            }
-        });
-        mainPanel.add(galleryRadio, gridBagConstraints);
-
-        indoorSelectorRadioGroup.add(outsideRadio);
-        outsideRadio.setText(resourceMap.getString("outsideRadio.text"));
-        outsideRadio.setName("outsideRadio");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        outsideRadio.addActionListener(x -> level2Radio.setEnabled(outsideRadio.isSelected()));
-        mainPanel.add(outsideRadio, gridBagConstraints);
-
-        periodLabel.setText(resourceMap.getString("periodLabel.text"));
-        periodLabel.setName("periodLabel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 10, 2, 0);
-        mainPanel.add(periodLabel, gridBagConstraints);
-
-        periodTextField.setName("periodTextField");
-        periodTextField.setText(resourceMap.getString("periodTextField.text"));
-        periodTextField.setPreferredSize(new java.awt.Dimension(12, 20));
-        periodTextField.setMaximumSize(new java.awt.Dimension(12, 20));
-        periodTextField.setMinimumSize(new java.awt.Dimension(12, 20));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(2, 5, 2, 280);
-        mainPanel.add(periodTextField, gridBagConstraints);
+        gridBagConstraints.gridy = gridY++;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 0, 5);
+        mainPanel.add(beginProcessing, gridBagConstraints);
 
         menuBar.setName("menuBar");
 
@@ -575,16 +606,14 @@ public class ManuLiczekMainView extends FrameView {
 
         InputStream levelFile = this.getClass().getClassLoader().getResourceAsStream(ManuLiczekMain.getParametrizedString(place + level + "FilePath", Colorer.class));
         InputStream coordinatesFile = this.getClass().getClassLoader().getResourceAsStream(ManuLiczekMain.getParametrizedString(place + "Coordinates" + level + "Path", Colorer.class));
-        InputStream coordinatesReserveFile = this.getClass().getClassLoader().getResourceAsStream(ManuLiczekMain.getParametrizedString(place + "Coordinates" + level + "Path", Colorer.class));
 
         ManuLiczekMain.getApplication().setIntpuFile(new File(inputFileTextField.getText()));
         ManuLiczekMain.getApplication().setOutputFile(new File(outputFileTextField.getText()));
         InputDataHolder inputDataHolder = new InputDataHolder(ManuLiczekMain.getApplication().getIntpuFile(),
                 sheetNameTextField.getText(), idColumnTextField.getText(), percentageTextField.getText(),
-                companiesNameTextField.getText(), periodTextField.getText());
+                companiesNameTextField.getText(), periodTextField.getText(), cousineTextField.getText());
         ManuLiczekMain.getApplication().setInputImageFile(levelFile);
         ManuLiczekMain.getApplication().setInputLocales(coordinatesFile);
-        ManuLiczekMain.getApplication().setReserveInputLocales(coordinatesReserveFile);
         try {
             ProcessingManager processingManagerTask = new ProcessingManager(inputDataHolder);
 
@@ -681,6 +710,8 @@ public class ManuLiczekMainView extends FrameView {
     private javax.swing.JFormattedTextField outputFileTextField;
     private javax.swing.JLabel percentageLabel;
     private javax.swing.JFormattedTextField percentageTextField;
+    private javax.swing.JLabel cousineLabel;
+    private javax.swing.JFormattedTextField cousineTextField;
     private javax.swing.JLabel periodLabel;
     private javax.swing.JFormattedTextField periodTextField;
     private javax.swing.JProgressBar progressBar;

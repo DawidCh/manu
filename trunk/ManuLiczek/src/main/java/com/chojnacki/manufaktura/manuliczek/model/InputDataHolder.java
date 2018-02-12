@@ -12,6 +12,7 @@ import java.io.File;
  * @author kalosh
  */
 public class InputDataHolder {
+    private String cousineColumn;
     private File inputFile;
     private String sheetName;
     private String shopIdColumn;
@@ -19,37 +20,18 @@ public class InputDataHolder {
     private String companiesName;
     private String period;
 
-    public InputDataHolder(File inputFile, String sheetName, String shopIdColumn, String percentageColumn, String companiesName, String period) {
+    public InputDataHolder(File inputFile, String sheetName, String shopIdColumn, String percentageColumn, String companiesName, String period, String cousineColumn) {
         this.inputFile = inputFile;
         this.sheetName = sheetName;
         this.shopIdColumn = shopIdColumn;
         this.percentageColumn = percentageColumn;
         this.companiesName = companiesName;
         this.period = period;
+        this.cousineColumn = cousineColumn;
     }
 
     public String getPeriod() {
         return period;
-    }
-
-    public void setCompaniesName(String companiesName) {
-        this.companiesName = companiesName;
-    }
-
-    public void setInputFile(File outputFile) {
-        this.inputFile = outputFile;
-    }
-
-    public void setPercentageColumn(String percentageColumn) {
-        this.percentageColumn = percentageColumn;
-    }
-
-    public void setSheetName(String sheetName) {
-        this.sheetName = sheetName;
-    }
-
-    public void setShopIdColumn(String shopIdColumn) {
-        this.shopIdColumn = shopIdColumn;
     }
 
     public String getCompaniesName() {
@@ -70,5 +52,9 @@ public class InputDataHolder {
 
     public String getShopIdColumn() {
         return shopIdColumn;
+    }
+
+    public String getCousineColumn() {
+        return cousineColumn;
     }
 }

@@ -6,22 +6,20 @@ package com.chojnacki.manufaktura.manuliczek.output;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import com.chojnacki.manufaktura.manuliczek.model.ColorHolder;
-import com.chojnacki.manufaktura.manuliczek.model.Place;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import org.jdesktop.application.Application;
+
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.*;
-
-import org.jdesktop.application.Application;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
 
 /**
- *
  * @author kalosh
  */
 public class Colorer {
@@ -41,6 +39,8 @@ public class Colorer {
     private Font idsFont;
     private Color idsFontColor;
     private boolean fillTable;
+    private final int cellCousineWidth = 110;
+    private final int maxCousineName = 21;
 
     public Colorer() throws Exception {
         cellHeight = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellHeight"));
@@ -79,6 +79,14 @@ public class Colorer {
             shopName = shopName.substring(0, maxNameLength + 1);
         }
         return shopName;
+    }
+
+    private String prepareCousine(Shop shop) {
+        String cousine = shop.getCousine();
+        if (cousine.length() > maxCousineName) {
+            cousine = cousine.substring(0, maxCousineName + 1);
+        }
+        return cousine;
     }
 
     private void regionGrow(int x, int y, int argb) {
@@ -150,7 +158,7 @@ public class Colorer {
             idGraphics.setColor(idsFontColor);
             AffineTransform aft =
                     new AffineTransform(
-                    Math.cos(Math.toRadians(90)), Math.sin(Math.toRadians(90)), -Math.sin(Math.toRadians(90)), Math.cos(Math.toRadians(90)), 7, -1);
+                            Math.cos(Math.toRadians(90)), Math.sin(Math.toRadians(90)), -Math.sin(Math.toRadians(90)), Math.cos(Math.toRadians(90)), 7, -1);
             idGraphics.setTransform(aft);
             idGraphics.clearRect(0, 0, 26, 7);
             idGraphics.drawString(shopId, 0, 7);
@@ -163,7 +171,7 @@ public class Colorer {
             idGraphics.setColor(idsFontColor);
             idGraphics.clearRect(0, 0, 27, 7);
             idGraphics.drawString(shopId, 0, 7);
-            mainGraphic.drawImage(idImage, shop.getX()-10, shop.getY() - 7, null);
+            mainGraphic.drawImage(idImage, shop.getX() - 10, shop.getY() - 7, null);
             if (shop.getShopId().startsWith("HM")) {
                 String shopName = shop.getShopName().toLowerCase();
                 if (shop.getShopName().length() > 6) {
@@ -196,29 +204,31 @@ public class Colorer {
         //horizontal line
         graphic.drawLine(0, currentRow * cellHeight, tableWidth, currentRow * cellHeight);
 
+        int columnWidth = (cellIdWidth + cellNameWidth + cellCousineWidth + 4 * cellXMargin);
         //vertical line
-        graphic.drawLine(currentColumn * (cellIdWidth + cellNameWidth), 0, currentColumn * (cellIdWidth + cellNameWidth), tableHeight);
+        graphic.drawLine(currentColumn * columnWidth, 0, currentColumn * columnWidth, tableHeight);
         graphic.setColor(Color.gray);
-        graphic.drawLine(currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, 0, currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, tableHeight);
+        graphic.drawLine(currentColumn * columnWidth + cellIdWidth, 0, currentColumn * columnWidth + cellIdWidth, tableHeight);
+        graphic.drawLine(currentColumn * columnWidth + cellIdWidth + cellXMargin + cellNameWidth, 0, currentColumn * columnWidth + cellIdWidth + cellXMargin + cellNameWidth, tableHeight);
         graphic.setColor(Color.black);
         //draw strings
-        graphic.drawString(shop.getShopId(), (currentColumn * (cellIdWidth + cellNameWidth)) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
-        graphic.drawString(prepareShopName(shop), (currentColumn * (cellIdWidth + cellNameWidth) + cellIdWidth) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(shop.getShopId(), currentColumn * columnWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(prepareShopName(shop), currentColumn * columnWidth + cellIdWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(prepareCousine(shop), currentColumn * columnWidth + cellIdWidth + cellNameWidth + 2 * cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
 
         //draw border lines
-        if (rows - 1 == currentRow && currentColumn == 1) {
+        if (rows - 1 == currentRow) {
             graphic.drawLine(0, tableHeight - 1, tableWidth - 1, tableHeight - 1);
-            graphic.drawLine(tableWidth - 1, 0, tableWidth - 1, tableHeight - 1);
-            graphic.drawLine(tableWidth - 2, 0, tableWidth - 2, tableHeight - 1);
-            graphic.setColor(Color.gray);
-            graphic.drawLine(tableWidth - cellNameWidth, 0, tableWidth - cellNameWidth, tableHeight - 1);
-            graphic.setColor(Color.black);
+            graphic.drawLine(tableWidth, 0, tableWidth, tableHeight - 1);
         }
     }
 
     public void setShopsCount(int shopsCount) {
-        rows = (int) Math.ceil((float)shopsCount / (float)getCellsPerRow());
+        rows = (int) Math.ceil((float) shopsCount / (float) getCellsPerRow());
         tableWidth = getCellsPerRow() * (cellIdWidth + cellNameWidth);
+        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
+            tableWidth = getCellsPerRow() * (cellIdWidth + cellNameWidth + cellCousineWidth + 4 * cellXMargin);
+        }
         tableHeight = rows * cellHeight;
     }
 
@@ -257,12 +267,12 @@ public class Colorer {
         } else {
             yPosition = 631;
         }
-        return new int[] {1345, yPosition};
+        return new int[]{1345, yPosition};
     }
 
     public int getCellsPerRow() {
         if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
-            return 3;
+            return 2;
         } else {
             return 8;
         }

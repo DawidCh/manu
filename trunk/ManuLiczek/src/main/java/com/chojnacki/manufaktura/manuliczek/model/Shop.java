@@ -20,6 +20,7 @@ public class Shop extends ColorHolder {
     private String shopId;
     private String shopName;
     private boolean position;
+    private String cousine;
 
     public Shop(String shopId, String shopName) {
         this.shopId = shopId;
@@ -100,5 +101,13 @@ public class Shop extends ColorHolder {
                 throw new Exception(ManuLiczekMain.getParametrizedString("errorInCoordinates", Shop.class, shopId));
             }
         }
+    }
+
+    public void setCousine(String cousine) {
+        this.cousine = cousine;
+    }
+
+    public String getCousine() {
+        return cousine;
     }
 }
