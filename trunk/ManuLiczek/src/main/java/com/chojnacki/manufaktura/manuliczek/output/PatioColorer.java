@@ -63,7 +63,7 @@ public class PatioColorer extends Colorer {
 
     private String prepareCousine(Shop shop) {
         String cousine = shop.getCousine();
-        if (cousine.length() > maxCousineName) {
+        if (cousine!= null && cousine.length() > maxCousineName) {
             cousine = cousine.substring(0, maxCousineName + 1);
         }
         return cousine;

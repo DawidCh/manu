@@ -64,12 +64,14 @@ public class ShopCollector {
         String shopId;
         String percentageColumn;
         String companiesName;
-        String cousineColumn;
+        String cousineColumn = null;
         for (int i = 1; i <= sheet.getRows(); i++) {
             shopId = sheet.getCell(inputDataHolder.getShopIdColumn() + i).getContents();
             companiesName = sheet.getCell(inputDataHolder.getCompaniesName() + i).getContents();
             percentageColumn = sheet.getCell(inputDataHolder.getPercentageColumn() + i).getContents();
-            cousineColumn = sheet.getCell(inputDataHolder.getCousineColumn() + i).getContents();
+            if (ManuLiczekMain.getApplication().getPlace().isGallery()) {
+                cousineColumn = sheet.getCell(inputDataHolder.getCousineColumn() + i).getContents();
+            }
             if (shopId != null) {
                 if(shopId.matches("H\\w{1,2}\\d{2,3}\\w?")) {
                     shopCountInDocument++;

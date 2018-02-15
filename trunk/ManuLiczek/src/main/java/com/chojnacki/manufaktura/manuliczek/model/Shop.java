@@ -108,6 +108,6 @@ public class Shop extends ColorHolder {
     }
 
     public String getCousine() {
-        return cousine;
+        return cousine == null ? "" : cousine;
     }
 }

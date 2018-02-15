@@ -29,6 +29,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.chojnacki.manufaktura.manuliczek.model.Level.*;
@@ -436,6 +437,7 @@ public class ManuLiczekMainView extends FrameView {
         beginProcessing.setAction(actionMap.get("beginProcessing"));
         beginProcessing.setMinimumSize(new java.awt.Dimension(0, 0));
         beginProcessing.setName("beginProcessing");
+        beginProcessing.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = gridY++;
@@ -627,36 +629,20 @@ public class ManuLiczekMainView extends FrameView {
 
                 @Override
                 protected void block() {
-                    beginProcessing.setEnabled(false);
-                    inputFileTextField.setEnabled(false);
-                    outputFileTextField.setEnabled(false);
-                    idColumnTextField.setEnabled(false);
-                    companiesNameTextField.setEnabled(false);
-                    percentageTextField.setEnabled(false);
-                    sheetNameTextField.setEnabled(false);
-                    levelRadio.setEnabled(false);
-                    level2Radio.setEnabled(false);
-                    groundRadio.setEnabled(false);
-                    outsideRadio.setEnabled(false);
-                    galleryRadio.setEnabled(false);
-                    periodTextField.setEnabled(false);
+                    Arrays.asList(beginProcessing, inputFileTextField, outputFileTextField, idColumnTextField,
+                            companiesNameTextField, percentageTextField, sheetNameTextField, levelRadio, level2Radio,
+                            groundRadio, outsideRadio, galleryRadio, periodTextField, cousineTextField).parallelStream()
+                            .forEach(x -> x.setEnabled(false));
                 }
 
                 @Override
                 protected void unblock() {
-                    beginProcessing.setEnabled(true);
-                    inputFileTextField.setEnabled(true);
-                    outputFileTextField.setEnabled(true);
-                    idColumnTextField.setEnabled(true);
-                    companiesNameTextField.setEnabled(true);
-                    percentageTextField.setEnabled(true);
-                    sheetNameTextField.setEnabled(true);
-                    levelRadio.setEnabled(true);
-                    groundRadio.setEnabled(true);
-                    outsideRadio.setEnabled(true);
-                    galleryRadio.setEnabled(true);
+                    Arrays.asList(beginProcessing, inputFileTextField, outputFileTextField, idColumnTextField,
+                            companiesNameTextField, percentageTextField, sheetNameTextField, levelRadio,
+                            groundRadio, outsideRadio, galleryRadio, periodTextField, cousineTextField).parallelStream()
+                            .forEach(x -> x.setEnabled(true));
                     level2Radio.setEnabled(outsideRadio.isSelected());
-                    periodTextField.setEnabled(true);
+                    cousineTextField.setEnabled(outsideRadio.isSelected());
                 }
             };
             processingManagerTask.setInputBlocker(inputBlocker);
