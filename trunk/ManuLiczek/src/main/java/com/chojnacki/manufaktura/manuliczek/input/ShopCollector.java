@@ -7,6 +7,7 @@ package com.chojnacki.manufaktura.manuliczek.input;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import com.chojnacki.manufaktura.manuliczek.model.InputDataHolder;
+import com.chojnacki.manufaktura.manuliczek.model.Level;
 import com.chojnacki.manufaktura.manuliczek.model.Place;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
 import java.util.ArrayList;
@@ -21,6 +22,10 @@ import jxl.Workbook;
 import org.apache.log4j.Logger;
 
 import static com.chojnacki.manufaktura.manuliczek.model.Level.FIRST;
+import static com.chojnacki.manufaktura.manuliczek.model.Level.GROUND;
+import static com.chojnacki.manufaktura.manuliczek.model.Level.SECOND;
+import static com.chojnacki.manufaktura.manuliczek.model.Place.GALLERY;
+import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
 
 /**
  *
@@ -85,16 +90,14 @@ public class ShopCollector {
                                 shopsAllowed.add(shopId);
                                 shop.setCoordinatesAndLayout((String) resources.getObject(shopId));
                             } else {
-                                boolean current = false;
-                                try {
-                                    current = currentFloor(shopId, resources);
-                                } catch (NumberFormatException exc) {
-                                    logger.warn("Incompatible shop id: " + shopId);
-                                }
-                                if (current) {
-                                    shopsCurrentFloorWithoutCoordinates.add(shopId);
-                                } else {
+                                Level floor = getFloor(shopId);
+                                Place place = getPlace(shopId);
+                                if (floor.equals(ManuLiczekMain.getApplication().getFloor()) &&
+                                        place.equals(ManuLiczekMain.getApplication().getPlace())) {
+                                    logger.info("Shop without coordinates " + shopId + " on the floor " + floor
+                                            + " in place " + place);
                                     shopAllFloorWithoutCoordinates.add(shopId);
+//                                    shopsCurrentFloorWithoutCoordinates.add(shopId);
                                 }
                             }
                         }
@@ -130,18 +133,30 @@ public class ShopCollector {
         return shopAllFloorWithoutCoordinates;
     }
 
-    protected boolean currentFloor(String shopId, ResourceBundle resources) {
-        boolean result;
-        if(ManuLiczekMain.getApplication().getPlace().equals(Place.GALLERY)) {
-            if (shopId.matches("HM\\d{3}")) {
-                result = true;
-            } else {
-                String id = shopId.substring(2);
-                int intId = Integer.valueOf(id);
-                result = intId >= 200 && ManuLiczekMain.getApplication().getFloor() == FIRST;
-            }
+    protected Level getFloor(String shopId) {
+        Level result = GROUND;
+        if (shopId.matches("HBF\\d{2}")) {
+            result = FIRST;
+        } else if (shopId.matches("HBR\\d{2}")) {
+            result = GROUND;
+        } else if (shopId.matches("H[M|B][2-4]\\d{2}")) {
+            result = FIRST;
+        } else if (shopId.matches("HMR0[1|7|8|9]")) {
+            result = FIRST;
+        } else if (shopId.matches("HMR1[0|1|3]")) {
+            result = SECOND;
+        }
+        return result;
+    }
+
+    protected Place getPlace(String shopId) {
+        Place result;
+        if (shopId.matches("H[A-Z]{2}\\d{2}")) {
+            result = PATIO;
+        } else if (shopId.matches("H[B|M]\\d{3}")) {
+            result = GALLERY;
         } else {
-            result = resources.containsKey(shopId);
+            throw new RuntimeException("Shop id in wrong format: " + shopId);
         }
         return result;
     }

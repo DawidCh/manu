@@ -7,19 +7,20 @@ package com.chojnacki.manufaktura.manuliczek.output;
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import com.chojnacki.manufaktura.manuliczek.model.ColorHolder;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
-import org.jdesktop.application.Application;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
+import org.jdesktop.application.Application;
 
 /**
+ *
  * @author kalosh
  */
 public class Colorer {
@@ -27,22 +28,21 @@ public class Colorer {
     private BufferedImage manuImage;
     private Set<Point> visitedPixels;
 
-    private int cellHeight;
-    private int cellIdWidth;
-    private int cellNameWidth;
-    private int cellXMargin;
-    private int cellYMargin;
+    protected int cellHeight;
+    protected int cellIdWidth;
+    protected int cellNameWidth;
+    protected int cellXMargin;
+    protected int cellYMargin;
+    protected int cellsPerRow;
     private int maxNameLength;
-    private int rows;
-    private int tableWidth;
-    private int tableHeight;
+    protected int rows;
+    protected int tableWidth;
+    protected int tableHeight;
     private Font idsFont;
     private Color idsFontColor;
-    private boolean fillTable;
-    private final int cellCousineWidth = 110;
-    private final int maxCousineName = 21;
+    protected boolean fillTable;
 
-    public Colorer() throws Exception {
+    public Colorer() {
         cellHeight = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellHeight"));
         cellIdWidth = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellIdWidth"));
         cellNameWidth = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellNameWidth"));
@@ -50,6 +50,7 @@ public class Colorer {
         cellYMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellYMargin"));
         maxNameLength = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("maxNameLength"));
         fillTable = Boolean.parseBoolean(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("fillTableVertical"));
+        cellsPerRow = 8;
 
         Properties fontSettings = ManuLiczekMain.getFontSettings();
         String fontName = (String) fontSettings.get("fontName");
@@ -73,20 +74,12 @@ public class Colorer {
         regionGrow(shop.getX(), shop.getY(), shop.getPercentageColor());
     }
 
-    private String prepareShopName(Shop shop) {
+    protected String prepareShopName(Shop shop) {
         String shopName = shop.getShopName();
         if (shopName.length() > maxNameLength) {
             shopName = shopName.substring(0, maxNameLength + 1);
         }
         return shopName;
-    }
-
-    private String prepareCousine(Shop shop) {
-        String cousine = shop.getCousine();
-        if (cousine.length() > maxCousineName) {
-            cousine = cousine.substring(0, maxCousineName + 1);
-        }
-        return cousine;
     }
 
     private void regionGrow(int x, int y, int argb) {
@@ -164,14 +157,14 @@ public class Colorer {
             idGraphics.drawString(shopId, 0, 7);
             mainGraphic.drawImage(idImage, shop.getX(), shop.getY(), null);
         } else {
-            BufferedImage idImage = new BufferedImage(27, 7, BufferedImage.TYPE_INT_RGB);
+            BufferedImage idImage = new BufferedImage(26, 7, BufferedImage.TYPE_INT_RGB);
             Graphics2D idGraphics = idImage.createGraphics();
             idGraphics.setBackground(new Color(shop.getPercentageColor()));
             idGraphics.setFont(idsFont);
             idGraphics.setColor(idsFontColor);
-            idGraphics.clearRect(0, 0, 27, 7);
+            idGraphics.clearRect(0, 0, 26, 7);
             idGraphics.drawString(shopId, 0, 7);
-            mainGraphic.drawImage(idImage, shop.getX() - 10, shop.getY() - 7, null);
+            mainGraphic.drawImage(idImage, shop.getX()-10, shop.getY() - 7, null);
             if (shop.getShopId().startsWith("HM")) {
                 String shopName = shop.getShopName().toLowerCase();
                 if (shop.getShopName().length() > 6) {
@@ -197,38 +190,36 @@ public class Colorer {
             currentRow = currentCounter % rows;
             currentColumn = (int) Math.floor(currentCounter / rows);
         } else {
-            currentRow = (int) Math.floor(currentCounter / getCellsPerRow());
-            currentColumn = currentCounter % getCellsPerRow();
+            currentRow = (int) Math.floor(currentCounter / cellsPerRow);
+            currentColumn = currentCounter % cellsPerRow;
         }
 
         //horizontal line
         graphic.drawLine(0, currentRow * cellHeight, tableWidth, currentRow * cellHeight);
 
-        int columnWidth = (cellIdWidth + cellNameWidth + cellCousineWidth + 4 * cellXMargin);
         //vertical line
-        graphic.drawLine(currentColumn * columnWidth, 0, currentColumn * columnWidth, tableHeight);
+        graphic.drawLine(currentColumn * (cellIdWidth + cellNameWidth), 0, currentColumn * (cellIdWidth + cellNameWidth), tableHeight);
         graphic.setColor(Color.gray);
-        graphic.drawLine(currentColumn * columnWidth + cellIdWidth, 0, currentColumn * columnWidth + cellIdWidth, tableHeight);
-        graphic.drawLine(currentColumn * columnWidth + cellIdWidth + cellXMargin + cellNameWidth, 0, currentColumn * columnWidth + cellIdWidth + cellXMargin + cellNameWidth, tableHeight);
+        graphic.drawLine(currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, 0, currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, tableHeight);
         graphic.setColor(Color.black);
         //draw strings
-        graphic.drawString(shop.getShopId(), currentColumn * columnWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
-        graphic.drawString(prepareShopName(shop), currentColumn * columnWidth + cellIdWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
-        graphic.drawString(prepareCousine(shop), currentColumn * columnWidth + cellIdWidth + cellNameWidth + 2 * cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(shop.getShopId(), (currentColumn * (cellIdWidth + cellNameWidth)) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(prepareShopName(shop), (currentColumn * (cellIdWidth + cellNameWidth) + cellIdWidth) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
 
         //draw border lines
-        if (rows - 1 == currentRow) {
+        if (rows - 1 == currentRow && currentColumn == 1) {
             graphic.drawLine(0, tableHeight - 1, tableWidth - 1, tableHeight - 1);
-            graphic.drawLine(tableWidth, 0, tableWidth, tableHeight - 1);
+            graphic.drawLine(tableWidth - 1, 0, tableWidth - 1, tableHeight - 1);
+            graphic.drawLine(tableWidth - 2, 0, tableWidth - 2, tableHeight - 1);
+            graphic.setColor(Color.gray);
+            graphic.drawLine(tableWidth - cellNameWidth, 0, tableWidth - cellNameWidth, tableHeight - 1);
+            graphic.setColor(Color.black);
         }
     }
 
     public void setShopsCount(int shopsCount) {
-        rows = (int) Math.ceil((float) shopsCount / (float) getCellsPerRow());
-        tableWidth = getCellsPerRow() * (cellIdWidth + cellNameWidth);
-        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
-            tableWidth = getCellsPerRow() * (cellIdWidth + cellNameWidth + cellCousineWidth + 4 * cellXMargin);
-        }
+        rows = (int) Math.ceil((float)shopsCount / (float)cellsPerRow);
+        tableWidth = cellsPerRow * (cellIdWidth + cellNameWidth);
         tableHeight = rows * cellHeight;
     }
 
@@ -260,21 +251,7 @@ public class Colorer {
         }
     }
 
-    private int[] getPeriodPosition() {
-        int yPosition;
-        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
-            yPosition = 75;
-        } else {
-            yPosition = 631;
-        }
-        return new int[]{1345, yPosition};
-    }
-
-    public int getCellsPerRow() {
-        if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
-            return 2;
-        } else {
-            return 8;
-        }
+    protected int[] getPeriodPosition() {
+        return new int[]{1345, 631};
     }
 }

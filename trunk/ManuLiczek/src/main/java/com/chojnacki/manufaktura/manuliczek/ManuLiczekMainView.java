@@ -602,10 +602,16 @@ public class ManuLiczekMainView extends FrameView {
     @Action
     public void beginProcessing() {
         String level = getFloor().equals(FIRST) ? "Level" : getFloor().equals(SECOND) ? "2ndLevel" : "Ground";
-        String place = getPlace().equals(PATIO) ? "patio" : "gallery";
+        String place = getPlace().isPatio() ? "patio" : "gallery";
+        String reversePlace = getPlace().isGallery() ? "patio" : "gallery";
 
         InputStream levelFile = this.getClass().getClassLoader().getResourceAsStream(ManuLiczekMain.getParametrizedString(place + level + "FilePath", Colorer.class));
         InputStream coordinatesFile = this.getClass().getClassLoader().getResourceAsStream(ManuLiczekMain.getParametrizedString(place + "Coordinates" + level + "Path", Colorer.class));
+
+        if (getPlace().isGallery()) {
+            InputStream reserveCoordinatesFile = this.getClass().getClassLoader().getResourceAsStream(ManuLiczekMain.getParametrizedString(reversePlace + "Coordinates" + level + "Path", Colorer.class));
+            ManuLiczekMain.getApplication().setReserveInputLocales(reserveCoordinatesFile);
+        }
 
         ManuLiczekMain.getApplication().setIntpuFile(new File(inputFileTextField.getText()));
         ManuLiczekMain.getApplication().setOutputFile(new File(outputFileTextField.getText()));

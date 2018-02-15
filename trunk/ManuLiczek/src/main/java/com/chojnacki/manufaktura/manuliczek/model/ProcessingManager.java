@@ -13,12 +13,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.imageio.ImageIO;
+
+import com.chojnacki.manufaktura.manuliczek.output.PatioColorer;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.Task;
 
@@ -35,7 +33,7 @@ public class ProcessingManager extends Task<Void, Void> {
     /**
      * Property which holds list with all collected shops.
      */
-    protected Colorer colorer;
+    protected Map<Place, Colorer> colorers;
     protected ShopCollector shopCollector;
     protected long timeDiff;
     protected File outputFile;
@@ -47,7 +45,9 @@ public class ProcessingManager extends Task<Void, Void> {
 
     public ProcessingManager(InputDataHolder inputDataHolder) throws Exception {
         super(ManuLiczekMain.getApplication());
-        colorer = new Colorer();
+        colorers = new HashMap<>();
+        colorers.put(PATIO, new PatioColorer());
+        colorers.put(GALLERY, new Colorer());
         shopCollector = new ShopCollector(inputDataHolder);
         period = inputDataHolder.getPeriod();
         outputFile = ManuLiczekMain.getApplication().getOutputFile();
@@ -63,7 +63,7 @@ public class ProcessingManager extends Task<Void, Void> {
         colorShops(shops);
         message("paintingIds.processing", shopsCount);
         paintIds(shops);
-        colorer.paintPeriod(period);
+        getColorers().paintPeriod(period);
         writeDataToFile();
         Date endTime = new Date();
         timeDiff = endTime.getTime() - startTime.getTime();
@@ -86,23 +86,23 @@ public class ProcessingManager extends Task<Void, Void> {
     public void colorShops(Map<String, Shop> shops) throws IOException {
         int shopsAllowedCount = shopCollector.getShopsAllowed().size();
         int shopsWCoordsCount = shopCollector.getShopsCurrentFloorWithoutCoordinates().size();
-        colorer.setShopsCount(shopsAllowedCount + shopsWCoordsCount);
-        colorer.setManuImage(ImageIO.read(ManuLiczekMain.getApplication().getInputImageFile()));
+        getColorers().setShopsCount(shopsAllowedCount + shopsWCoordsCount);
+        getColorers().setManuImage(ImageIO.read(ManuLiczekMain.getApplication().getInputImageFile()));
         List<String> shopsAllowedIds = shopCollector.getShopsAllowed();
         String shopId;
         Shop shop;
         for (int i = 0; i < shopsAllowedCount; i++) {
             shopId = shopsAllowedIds.get(i);
             shop = shops.get(shopId);
-            colorer.colorShop(shop);
+            getColorers().colorShop(shop);
             setProgress(i, 0, shopsAllowedCount);
         }
     }
 
     private void paintIds(Map<String, Shop> shops) {
-        int tableImageHeight = colorer.getTableHeight();
+        int tableImageHeight = getColorers().getTableHeight();
 
-        BufferedImage currentManuImage = colorer.getManuImage();
+        BufferedImage currentManuImage = getColorers().getManuImage();
         BufferedImage tableImage = new BufferedImage(currentManuImage.getWidth(), tableImageHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D manuGraphic = currentManuImage.createGraphics();
 
@@ -115,7 +115,7 @@ public class ProcessingManager extends Task<Void, Void> {
         Shop shop;
         List<String> shopsAllowedIds = shopCollector.getShopsAllowed();
         List<String> shopsIdToPaint = new ArrayList<>();
-        List<String> shopsWCoordinates = new ArrayList<String>(shopCollector.getShopsCurrentFloorWithoutCoordinates());
+        List<String> shopsWCoordinates = new ArrayList<>(shopCollector.getShopsCurrentFloorWithoutCoordinates());
         filterShopsWCoordinates(shopsWCoordinates);
         shopsIdToPaint.addAll(shopsAllowedIds);
         shopsIdToPaint.addAll(shopsWCoordinates);
@@ -123,8 +123,8 @@ public class ProcessingManager extends Task<Void, Void> {
         for(int i = 0; i < shopsIdToPaint.size(); i++) {
             shopId = shopsIdToPaint.get(i);
             shop = shops.get(shopId);
-            colorer.paintShopId(shop, manuGraphic);
-            colorer.paintShopInTable(shop, i, tableGraphic);
+            getColorers().paintShopId(shop, manuGraphic);
+            getColorers().paintShopInTable(shop, i, tableGraphic);
             setProgress(i, 0, shopsIdToPaint.size());
         }
         int resultImageSize[] = getResultImageSize(tableImage);
@@ -133,21 +133,21 @@ public class ProcessingManager extends Task<Void, Void> {
         resultGraphic.drawImage(currentManuImage, 0, 0, null);
         int tableImagePosition[] = getTableImagePosition();
         resultGraphic.drawImage(tableImage, tableImagePosition[0], tableImagePosition[1], null);
-        colorer.setManuImage(resultImage);
+        getColorers().setManuImage(resultImage);
     }
 
     private int[] getResultImageSize(BufferedImage tableImage) {
-        int x = colorer.getManuImage().getWidth();
-        int y = colorer.getManuImage().getHeight() + tableImage.getHeight();
+        int x = getColorers().getManuImage().getWidth();
+        int y = getColorers().getManuImage().getHeight() + tableImage.getHeight();
         if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
-            y = Math.max(y - TABLE_IMAGE_OFFSET, y);
+            y = Math.max(TABLE_IMAGE_OFFSET + tableImage.getHeight(),  getColorers().getManuImage().getHeight());
         }
         return new int[] {x, y};
     }
 
     private int[] getTableImagePosition() {
         int x = 1;
-        int y = colorer.getManuImage().getHeight() - 1;
+        int y = getColorers().getManuImage().getHeight() - 1;
         if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
             x = 860;
             y = TABLE_IMAGE_OFFSET;
@@ -157,7 +157,7 @@ public class ProcessingManager extends Task<Void, Void> {
 
     private void initTableGraphics(BufferedImage currentManuImage, Graphics2D tableGraphic) {
         int width = currentManuImage.getWidth();
-        int height = colorer.getTableHeight();
+        int height = getColorers().getTableHeight();
         if (ManuLiczekMain.getApplication().getPlace().equals(PATIO)) {
             height = currentManuImage.getWidth();
         }
@@ -179,7 +179,11 @@ public class ProcessingManager extends Task<Void, Void> {
     public void writeDataToFile() throws IOException {
         if (outputFile != null) {
             String fileName[] = outputFile.getName().split("\\.");
-            ImageIO.write(colorer.getManuImage(), fileName[1], outputFile);
+            ImageIO.write(getColorers().getManuImage(), fileName[1], outputFile);
         }
+    }
+    
+    private Colorer getColorers() {
+        return colorers.get(ManuLiczekMain.getApplication().getPlace());
     }
 }
