@@ -69,7 +69,7 @@ public class ShopCollector {
             shopId = sheet.getCell(inputDataHolder.getShopIdColumn() + i).getContents();
             companiesName = sheet.getCell(inputDataHolder.getCompaniesName() + i).getContents();
             percentageColumn = sheet.getCell(inputDataHolder.getPercentageColumn() + i).getContents();
-            if (ManuLiczekMain.getApplication().getPlace().isGallery()) {
+            if (ManuLiczekMain.getApplication().getPlace().isPatio()) {
                 cousineColumn = sheet.getCell(inputDataHolder.getCousineColumn() + i).getContents();
             }
             if (shopId != null) {
