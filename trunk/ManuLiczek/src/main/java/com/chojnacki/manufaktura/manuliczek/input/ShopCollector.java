@@ -90,7 +90,7 @@ public class ShopCollector {
                             shops.put(shopId, shop);
                             if (shopHasCoordinates(shopId, resources)) {
                                 shopsAllowed.add(shopId);
-                                shop.setCoordinatesAndLayout((String) resources.getObject(shopId));
+                                shop.setCoordinatesAliasAndLayout((String) resources.getObject(shopId));
                             } else {
                                 Level floor = getFloor(shopId);
                                 Place place = getPlace(shopId);
@@ -99,7 +99,6 @@ public class ShopCollector {
                                     logger.info("Shop without coordinates " + shopId + " on the floor " + floor
                                             + " in place " + place);
                                     shopAllFloorWithoutCoordinates.add(shopId);
-//                                    shopsCurrentFloorWithoutCoordinates.add(shopId);
                                 }
                             }
                         }
@@ -117,14 +116,6 @@ public class ShopCollector {
 
     public List<String> getShopsAllowed() {
         return shopsAllowed;
-    }
-
-    public int getShopCountInDocument() {
-        return shopCountInDocument;
-    }
-
-    public int getShopsCount() {
-        return shops.size();
     }
 
     public List<String> getShopsCurrentFloorWithoutCoordinates() {

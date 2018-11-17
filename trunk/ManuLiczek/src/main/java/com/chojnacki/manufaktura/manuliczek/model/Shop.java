@@ -6,6 +6,7 @@
 package com.chojnacki.manufaktura.manuliczek.model;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -21,6 +22,7 @@ public class Shop extends ColorHolder {
     private String shopName;
     private boolean position;
     private String cousine;
+    private String shopIdAlias;
 
     public Shop(String shopId, String shopName) {
         this.shopId = shopId;
@@ -42,24 +44,12 @@ public class Shop extends ColorHolder {
         this.position = position;
     }
 
-    public void setShopId(String shopId) {
-        this.shopId = shopId;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public String getShopId() {
         return shopId;
+    }
+
+    public String getAliasOrShopId() {
+        return StringUtils.isBlank(shopIdAlias) ? shopId : shopIdAlias;
     }
 
     public String getShopName() {
@@ -83,19 +73,20 @@ public class Shop extends ColorHolder {
         return position;
     }
 
-    public void setCoordinatesAndLayout(String coordinatesString) throws Exception {
-        if (coordinatesString != null && !coordinatesString.equals("")) {
+    public void setCoordinatesAliasAndLayout(String coordinatesString) throws Exception {
+        if (StringUtils.isNotBlank(coordinatesString)) {
             String coordinates[] = coordinatesString.split(",");
             if (coordinates.length >= 2) {
                 x = Integer.parseInt(coordinates[0]);
                 y = Integer.parseInt(coordinates[1]);
-                if (coordinates.length == 3) {
-                    int intBool = Integer.parseInt(coordinates[2]);
-                    if (intBool == 1) {
-                        position = VERTICAL;
-                    } else {
-                        position = HORIZONTAL;
-                    }
+                int intBool = Integer.parseInt(coordinates[2]);
+                if (intBool == 1) {
+                    position = VERTICAL;
+                } else {
+                    position = HORIZONTAL;
+                }
+                if (coordinates.length == 4) {
+                    shopIdAlias = coordinates[3];
                 }
             } else {
                 throw new Exception(ManuLiczekMain.getParametrizedString("errorInCoordinates", Shop.class, shopId));

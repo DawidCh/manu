@@ -140,7 +140,7 @@ public class Colorer {
     }
 
     public void paintShopId(Shop shop, Graphics2D mainGraphic) {
-        String shopId = shop.getShopId().substring(1);
+        String shopId = shop.getAliasOrShopId().substring(1);
         mainGraphic.setFont(idsFont);
         mainGraphic.setColor(idsFontColor);
         if (shop.getPosition() == Shop.VERTICAL) {
@@ -165,7 +165,7 @@ public class Colorer {
             idGraphics.clearRect(0, 0, 26, 7);
             idGraphics.drawString(shopId, 0, 7);
             mainGraphic.drawImage(idImage, shop.getX()-10, shop.getY() - 7, null);
-            if (shop.getShopId().startsWith("HM")) {
+            if (shop.getAliasOrShopId().startsWith("HM")) {
                 String shopName = shop.getShopName().toLowerCase();
                 if (shop.getShopName().length() > 6) {
                     StringTokenizer strTok = new StringTokenizer(shopName, " +");
@@ -203,7 +203,7 @@ public class Colorer {
         graphic.drawLine(currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, 0, currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, tableHeight);
         graphic.setColor(Color.black);
         //draw strings
-        graphic.drawString(shop.getShopId(), (currentColumn * (cellIdWidth + cellNameWidth)) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(shop.getAliasOrShopId(), (currentColumn * (cellIdWidth + cellNameWidth)) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
         graphic.drawString(prepareShopName(shop), (currentColumn * (cellIdWidth + cellNameWidth) + cellIdWidth) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
 
         //draw border lines

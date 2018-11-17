@@ -50,7 +50,7 @@ public class PatioColorer extends Colorer {
         graphic.drawLine(currentColumn * columnWidth + cellIdWidth + cellXMargin + cellNameWidth, 0, currentColumn * columnWidth + cellIdWidth + cellXMargin + cellNameWidth, tableHeight);
         graphic.setColor(Color.black);
         //draw strings
-        graphic.drawString(shop.getShopId(), currentColumn * columnWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(shop.getAliasOrShopId(), currentColumn * columnWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
         graphic.drawString(prepareShopName(shop), currentColumn * columnWidth + cellIdWidth + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
         graphic.drawString(prepareCousine(shop), currentColumn * columnWidth + cellIdWidth + cellNameWidth + 2 * cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
 
