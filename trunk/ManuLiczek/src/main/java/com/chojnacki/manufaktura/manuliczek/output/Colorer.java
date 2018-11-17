@@ -6,6 +6,7 @@ package com.chojnacki.manufaktura.manuliczek.output;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import com.chojnacki.manufaktura.manuliczek.model.ColorHolder;
+import com.chojnacki.manufaktura.manuliczek.model.Layout;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
 import java.awt.Color;
 import java.awt.Font;
@@ -40,7 +41,7 @@ public class Colorer {
     protected int tableHeight;
     private Font idsFont;
     private Color idsFontColor;
-    protected boolean fillTable;
+    protected Layout fillTable;
 
     public Colorer() {
         cellHeight = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellHeight"));
@@ -49,7 +50,7 @@ public class Colorer {
         cellXMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellXMargin"));
         cellYMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellYMargin"));
         maxNameLength = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("maxNameLength"));
-        fillTable = Boolean.parseBoolean(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("fillTableVertical"));
+        fillTable = Layout.valueOf(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("fillTable"));
         cellsPerRow = 8;
 
         Properties fontSettings = ManuLiczekMain.getFontSettings();
@@ -143,7 +144,7 @@ public class Colorer {
         String shopId = shop.getAliasOrShopId().substring(1);
         mainGraphic.setFont(idsFont);
         mainGraphic.setColor(idsFontColor);
-        if (shop.getPosition() == Shop.VERTICAL) {
+        if (shop.getPosition().isVertical()) {
             BufferedImage idImage = new BufferedImage(7, 25, BufferedImage.TYPE_INT_RGB);
             Graphics2D idGraphics = idImage.createGraphics();
             idGraphics.setBackground(new Color(shop.getPercentageColor()));
@@ -186,7 +187,7 @@ public class Colorer {
         int currentRow;
         int currentColumn;
 
-        if (fillTable == Shop.VERTICAL) {
+        if (fillTable.isVertical()) {
             currentRow = currentCounter % rows;
             currentColumn = (int) Math.floor(currentCounter / rows);
         } else {

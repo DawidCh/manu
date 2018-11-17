@@ -4,6 +4,9 @@ import com.chojnacki.manufaktura.manuliczek.model.Shop;
 
 import java.awt.*;
 
+import static com.chojnacki.manufaktura.manuliczek.model.Layout.HORIZONTAL;
+import static org.apache.commons.lang3.StringUtils.length;
+
 public class PatioColorer extends Colorer {
 
     private final int cellCousineWidth = 110;
@@ -11,7 +14,7 @@ public class PatioColorer extends Colorer {
 
     public PatioColorer() {
         cellsPerRow = 2;
-        fillTable = false;
+        fillTable = HORIZONTAL;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class PatioColorer extends Colorer {
         int currentRow;
         int currentColumn;
 
-        if (fillTable == Shop.VERTICAL) {
+        if (fillTable.isVertical()) {
             currentRow = currentCounter % rows;
             currentColumn = (int) Math.floor(currentCounter / rows);
         } else {
@@ -63,7 +66,7 @@ public class PatioColorer extends Colorer {
 
     private String prepareCousine(Shop shop) {
         String cousine = shop.getCousine();
-        if (cousine!= null && cousine.length() > maxCousineName) {
+        if (length(cousine) > maxCousineName) {
             cousine = cousine.substring(0, maxCousineName + 1);
         }
         return cousine;

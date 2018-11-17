@@ -8,19 +8,19 @@ package com.chojnacki.manufaktura.manuliczek.model;
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import org.apache.commons.lang3.StringUtils;
 
+import static com.chojnacki.manufaktura.manuliczek.model.Layout.HORIZONTAL;
+
 /**
  *
  * @author kalosh
  */
 public class Shop extends ColorHolder {
-    public static final boolean VERTICAL = true;
-    public static final boolean HORIZONTAL = false;
     
     private int x;
     private int y;
     private String shopId;
     private String shopName;
-    private boolean position;
+    private Layout position;
     private String cousine;
     private String shopIdAlias;
 
@@ -35,13 +35,6 @@ public class Shop extends ColorHolder {
         this.shopId = shopId;
         this.shopName = shopName;
         this.position = HORIZONTAL;
-    }
-
-    public Shop(int percentage, int x, int y, int width_x, int height_y, String shopId, String shopName, boolean position) {
-        this(percentage, shopId, shopName);
-        this.x = x;
-        this.y = y;
-        this.position = position;
     }
 
     public String getShopId() {
@@ -69,7 +62,7 @@ public class Shop extends ColorHolder {
         return shopId + ", ";
     }
 
-    public boolean getPosition() {
+    public Layout getPosition() {
         return position;
     }
 
@@ -79,12 +72,7 @@ public class Shop extends ColorHolder {
             if (coordinates.length >= 2) {
                 x = Integer.parseInt(coordinates[0]);
                 y = Integer.parseInt(coordinates[1]);
-                int intBool = Integer.parseInt(coordinates[2]);
-                if (intBool == 1) {
-                    position = VERTICAL;
-                } else {
-                    position = HORIZONTAL;
-                }
+                position = Layout.valueOf(coordinates[2]);
                 if (coordinates.length == 4) {
                     shopIdAlias = coordinates[3];
                 }

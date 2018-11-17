@@ -88,14 +88,13 @@ public class ProcessingManager extends Task<Void, Void> {
         int shopsWCoordsCount = shopCollector.getShopsCurrentFloorWithoutCoordinates().size();
         getColorers().setShopsCount(shopsAllowedCount + shopsWCoordsCount);
         getColorers().setManuImage(ImageIO.read(ManuLiczekMain.getApplication().getInputImageFile()));
-        List<String> shopsAllowedIds = shopCollector.getShopsAllowed();
-        String shopId;
+        Collection<String> shopsAllowedIds = shopCollector.getShopsAllowed();
         Shop shop;
-        for (int i = 0; i < shopsAllowedCount; i++) {
-            shopId = shopsAllowedIds.get(i);
+        int counter = 0;
+        for (String shopId : shopsAllowedIds) {
             shop = shops.get(shopId);
             getColorers().colorShop(shop);
-            setProgress(i, 0, shopsAllowedCount);
+            setProgress(counter++, 0, shopsAllowedCount);
         }
     }
 
@@ -113,7 +112,7 @@ public class ProcessingManager extends Task<Void, Void> {
 
         String shopId;
         Shop shop;
-        List<String> shopsAllowedIds = shopCollector.getShopsAllowed();
+        Collection<String> shopsAllowedIds = shopCollector.getShopsAllowed();
         List<String> shopsIdToPaint = new ArrayList<>();
         List<String> shopsWCoordinates = new ArrayList<>(shopCollector.getShopsCurrentFloorWithoutCoordinates());
         filterShopsWCoordinates(shopsWCoordinates);

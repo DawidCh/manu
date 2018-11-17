@@ -10,13 +10,9 @@ import com.chojnacki.manufaktura.manuliczek.model.InputDataHolder;
 import com.chojnacki.manufaktura.manuliczek.model.Level;
 import com.chojnacki.manufaktura.manuliczek.model.Place;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+
+import java.util.*;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
@@ -33,9 +29,9 @@ import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
  */
 public class ShopCollector {
 
-    protected List<String> shopsCurrentFloorWithoutCoordinates;
-    protected List<String> shopsAllowed;
-    protected List<String> shopAllFloorWithoutCoordinates;
+    protected Set<String> shopsCurrentFloorWithoutCoordinates;
+    protected Set<String> shopsAllowed;
+    protected SortedSet<String> shopAllFloorWithoutCoordinates;
     protected Map<String, Shop> shops;
     protected int shopCountInDocument;
     private static final Logger logger = Logger.getLogger(ShopCollector.class);
@@ -44,16 +40,16 @@ public class ShopCollector {
 
     public ShopCollector(InputDataHolder inputDataHolder) {
         this.inputDataHolder = inputDataHolder;
-        shopsCurrentFloorWithoutCoordinates = Collections.emptyList();
-        shopsAllowed = Collections.emptyList();
-        shopAllFloorWithoutCoordinates = Collections.emptyList();
+        shopsCurrentFloorWithoutCoordinates = Collections.emptySet();
+        shopsAllowed = Collections.emptySet();
+        shopAllFloorWithoutCoordinates = Collections.emptySortedSet();
     }
 
     public Map<String, Shop> collectShops() throws Exception {
         shops = new HashMap<>();
-        shopsCurrentFloorWithoutCoordinates = new ArrayList<>();
-        shopAllFloorWithoutCoordinates = new ArrayList<>();
-        shopsAllowed = new ArrayList<>();
+        shopsCurrentFloorWithoutCoordinates = new HashSet<>();
+        shopAllFloorWithoutCoordinates = new TreeSet<>();
+        shopsAllowed = new HashSet<>();
 
         Workbook workbook = Workbook.getWorkbook(this.inputDataHolder.getInputFile());
         Sheet sheet = workbook.getSheet(this.inputDataHolder.getSheetName());
@@ -106,7 +102,6 @@ public class ShopCollector {
                 }
             }
         }
-        Collections.sort(shopAllFloorWithoutCoordinates);
         return shops;
     }
 
@@ -114,15 +109,15 @@ public class ShopCollector {
         return shops;
     }
 
-    public List<String> getShopsAllowed() {
+    public Collection<String> getShopsAllowed() {
         return shopsAllowed;
     }
 
-    public List<String> getShopsCurrentFloorWithoutCoordinates() {
+    public Collection<String> getShopsCurrentFloorWithoutCoordinates() {
         return shopsCurrentFloorWithoutCoordinates;
     }
 
-    public List<String> getShopAllFloorWithoutCoordinates() {
+    public Collection<String> getShopAllFloorWithoutCoordinates() {
         return shopAllFloorWithoutCoordinates;
     }
 
