@@ -75,7 +75,7 @@ public class Colorer {
         regionGrow(shop.getX(), shop.getY(), shop.getPercentageColor());
     }
 
-    protected String prepareShopName(Shop shop) {
+    String prepareShopName(Shop shop) {
         String shopName = shop.getShopName();
         if (shopName.length() > maxNameLength) {
             shopName = shopName.substring(0, maxNameLength + 1);
@@ -87,22 +87,22 @@ public class Colorer {
         manuImage.setRGB(x, y, argb);
         visitedPixels.add(new Point(x, y));
         //go left
-        if (!isTheBorderPixel(x - 1, y) && !visitedPixels.contains(new Point(x - 1, y))) {
+        if (isFieldPixel(x - 1, y) && !visitedPixels.contains(new Point(x - 1, y))) {
             regionGrow(x - 1, y, argb);
         }
 
         //go up
-        if (!isTheBorderPixel(x, y - 1) && !visitedPixels.contains(new Point(x, y - 1))) {
+        if (isFieldPixel(x, y - 1) && !visitedPixels.contains(new Point(x, y - 1))) {
             regionGrow(x, y - 1, argb);
         }
 
         //go right
-        if (!isTheBorderPixel(x + 1, y) && !visitedPixels.contains(new Point(x + 1, y))) {
+        if (isFieldPixel(x + 1, y) && !visitedPixels.contains(new Point(x + 1, y))) {
             regionGrow(x + 1, y, argb);
         }
 
         //go down
-        if (!isTheBorderPixel(x, y + 1) && !visitedPixels.contains(new Point(x, y + 1))) {
+        if (isFieldPixel(x, y + 1) && !visitedPixels.contains(new Point(x, y + 1))) {
             regionGrow(x, y + 1, argb);
         }
     }
@@ -120,8 +120,7 @@ public class Colorer {
         return result;
     }
 
-    private boolean isTheBorderPixel(int i, int j) {
-        boolean result = true;
+    private boolean isFieldPixel(int i, int j) {
         int currentColor = manuImage.getRGB(i, j);
         int borderColor = makeARGB(Application.getInstance().getContext().getResourceMap(ColorHolder.class).getString("borderColor"));
         int margin = Integer.valueOf(Application.getInstance().getContext().getResourceMap(ColorHolder.class).getString("colorMargin"));
@@ -129,10 +128,7 @@ public class Colorer {
         int current[] = printPixelARGB(currentColor);
 
         double distance = Math.sqrt(Math.pow(border[0] - current[0], 2) + Math.pow(border[1] - current[1], 2) + Math.pow(border[2] - current[2], 2));
-        if (distance > margin) {
-            result = false;
-        }
-        return result;
+        return distance > margin;
     }
 
     private int makeARGB(String rgbString) {

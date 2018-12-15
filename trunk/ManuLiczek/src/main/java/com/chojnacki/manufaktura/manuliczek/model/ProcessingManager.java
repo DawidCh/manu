@@ -22,6 +22,8 @@ import org.jdesktop.application.Task;
 
 import static com.chojnacki.manufaktura.manuliczek.model.Place.GALLERY;
 import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
+import static java.awt.Color.WHITE;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 /**
  *
@@ -102,7 +104,7 @@ public class ProcessingManager extends Task<Void, Void> {
         int tableImageHeight = getColorers().getTableHeight();
 
         BufferedImage currentManuImage = getColorers().getManuImage();
-        BufferedImage tableImage = new BufferedImage(currentManuImage.getWidth(), tableImageHeight, BufferedImage.TYPE_INT_RGB);
+        BufferedImage tableImage = new BufferedImage(currentManuImage.getWidth(), tableImageHeight, TYPE_INT_RGB);
         Graphics2D manuGraphic = currentManuImage.createGraphics();
 
         Graphics2D tableGraphic = tableImage.createGraphics();
@@ -127,8 +129,9 @@ public class ProcessingManager extends Task<Void, Void> {
             setProgress(i, 0, shopsIdToPaint.size());
         }
         int resultImageSize[] = getResultImageSize(tableImage);
-        BufferedImage resultImage = new BufferedImage(resultImageSize[0], resultImageSize[1], BufferedImage.TYPE_INT_RGB);
+        BufferedImage resultImage = new BufferedImage(resultImageSize[0], resultImageSize[1], TYPE_INT_RGB);
         Graphics2D resultGraphic = resultImage.createGraphics();
+        resultGraphic.setColor(WHITE);
         resultGraphic.drawImage(currentManuImage, 0, 0, null);
         int tableImagePosition[] = getTableImagePosition();
         resultGraphic.drawImage(tableImage, tableImagePosition[0], tableImagePosition[1], null);
