@@ -6,6 +6,7 @@ package com.chojnacki.manufaktura.manuliczek.output;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
 import com.chojnacki.manufaktura.manuliczek.model.ColorHolder;
+import com.chojnacki.manufaktura.manuliczek.model.Layout;
 import com.chojnacki.manufaktura.manuliczek.model.Shop;
 import java.awt.Color;
 import java.awt.Font;
@@ -40,7 +41,7 @@ public class Colorer {
     protected int tableHeight;
     private Font idsFont;
     private Color idsFontColor;
-    protected boolean fillTable;
+    protected Layout fillTable;
 
     public Colorer() {
         cellHeight = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellHeight"));
@@ -49,7 +50,7 @@ public class Colorer {
         cellXMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellXMargin"));
         cellYMargin = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("cellYMargin"));
         maxNameLength = Integer.parseInt(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("maxNameLength"));
-        fillTable = Boolean.parseBoolean(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("fillTableVertical"));
+        fillTable = Layout.valueOf(Application.getInstance().getContext().getResourceMap(Colorer.class).getString("fillTable"));
         cellsPerRow = 8;
 
         Properties fontSettings = ManuLiczekMain.getFontSettings();
@@ -74,7 +75,7 @@ public class Colorer {
         regionGrow(shop.getX(), shop.getY(), shop.getPercentageColor());
     }
 
-    protected String prepareShopName(Shop shop) {
+    String prepareShopName(Shop shop) {
         String shopName = shop.getShopName();
         if (shopName.length() > maxNameLength) {
             shopName = shopName.substring(0, maxNameLength + 1);
@@ -86,22 +87,22 @@ public class Colorer {
         manuImage.setRGB(x, y, argb);
         visitedPixels.add(new Point(x, y));
         //go left
-        if (!isTheBorderPixel(x - 1, y) && !visitedPixels.contains(new Point(x - 1, y))) {
+        if (isFieldPixel(x - 1, y) && !visitedPixels.contains(new Point(x - 1, y))) {
             regionGrow(x - 1, y, argb);
         }
 
         //go up
-        if (!isTheBorderPixel(x, y - 1) && !visitedPixels.contains(new Point(x, y - 1))) {
+        if (isFieldPixel(x, y - 1) && !visitedPixels.contains(new Point(x, y - 1))) {
             regionGrow(x, y - 1, argb);
         }
 
         //go right
-        if (!isTheBorderPixel(x + 1, y) && !visitedPixels.contains(new Point(x + 1, y))) {
+        if (isFieldPixel(x + 1, y) && !visitedPixels.contains(new Point(x + 1, y))) {
             regionGrow(x + 1, y, argb);
         }
 
         //go down
-        if (!isTheBorderPixel(x, y + 1) && !visitedPixels.contains(new Point(x, y + 1))) {
+        if (isFieldPixel(x, y + 1) && !visitedPixels.contains(new Point(x, y + 1))) {
             regionGrow(x, y + 1, argb);
         }
     }
@@ -119,8 +120,7 @@ public class Colorer {
         return result;
     }
 
-    private boolean isTheBorderPixel(int i, int j) {
-        boolean result = true;
+    private boolean isFieldPixel(int i, int j) {
         int currentColor = manuImage.getRGB(i, j);
         int borderColor = makeARGB(Application.getInstance().getContext().getResourceMap(ColorHolder.class).getString("borderColor"));
         int margin = Integer.valueOf(Application.getInstance().getContext().getResourceMap(ColorHolder.class).getString("colorMargin"));
@@ -128,10 +128,7 @@ public class Colorer {
         int current[] = printPixelARGB(currentColor);
 
         double distance = Math.sqrt(Math.pow(border[0] - current[0], 2) + Math.pow(border[1] - current[1], 2) + Math.pow(border[2] - current[2], 2));
-        if (distance > margin) {
-            result = false;
-        }
-        return result;
+        return distance > margin;
     }
 
     private int makeARGB(String rgbString) {
@@ -140,10 +137,10 @@ public class Colorer {
     }
 
     public void paintShopId(Shop shop, Graphics2D mainGraphic) {
-        String shopId = shop.getShopId().substring(1);
+        String shopId = shop.getAliasOrShopId().substring(1);
         mainGraphic.setFont(idsFont);
         mainGraphic.setColor(idsFontColor);
-        if (shop.getPosition() == Shop.VERTICAL) {
+        if (shop.getPosition().isVertical()) {
             BufferedImage idImage = new BufferedImage(7, 25, BufferedImage.TYPE_INT_RGB);
             Graphics2D idGraphics = idImage.createGraphics();
             idGraphics.setBackground(new Color(shop.getPercentageColor()));
@@ -165,7 +162,7 @@ public class Colorer {
             idGraphics.clearRect(0, 0, 26, 7);
             idGraphics.drawString(shopId, 0, 7);
             mainGraphic.drawImage(idImage, shop.getX()-10, shop.getY() - 7, null);
-            if (shop.getShopId().startsWith("HM")) {
+            if (shop.getAliasOrShopId().startsWith("HM")) {
                 String shopName = shop.getShopName().toLowerCase();
                 if (shop.getShopName().length() > 6) {
                     StringTokenizer strTok = new StringTokenizer(shopName, " +");
@@ -186,7 +183,7 @@ public class Colorer {
         int currentRow;
         int currentColumn;
 
-        if (fillTable == Shop.VERTICAL) {
+        if (fillTable.isVertical()) {
             currentRow = currentCounter % rows;
             currentColumn = (int) Math.floor(currentCounter / rows);
         } else {
@@ -203,7 +200,7 @@ public class Colorer {
         graphic.drawLine(currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, 0, currentColumn * (cellIdWidth + cellNameWidth) - cellNameWidth, tableHeight);
         graphic.setColor(Color.black);
         //draw strings
-        graphic.drawString(shop.getShopId(), (currentColumn * (cellIdWidth + cellNameWidth)) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
+        graphic.drawString(shop.getAliasOrShopId(), (currentColumn * (cellIdWidth + cellNameWidth)) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
         graphic.drawString(prepareShopName(shop), (currentColumn * (cellIdWidth + cellNameWidth) + cellIdWidth) + cellXMargin, (currentRow + 1) * cellHeight - cellYMargin);
 
         //draw border lines

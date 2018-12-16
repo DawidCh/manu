@@ -6,21 +6,23 @@
 package com.chojnacki.manufaktura.manuliczek.model;
 
 import com.chojnacki.manufaktura.manuliczek.ManuLiczekMain;
+import org.apache.commons.lang3.StringUtils;
+
+import static com.chojnacki.manufaktura.manuliczek.model.Layout.HORIZONTAL;
 
 /**
  *
  * @author kalosh
  */
 public class Shop extends ColorHolder {
-    public static final boolean VERTICAL = true;
-    public static final boolean HORIZONTAL = false;
     
     private int x;
     private int y;
     private String shopId;
     private String shopName;
-    private boolean position;
+    private Layout position;
     private String cousine;
+    private String shopIdAlias;
 
     public Shop(String shopId, String shopName) {
         this.shopId = shopId;
@@ -35,31 +37,12 @@ public class Shop extends ColorHolder {
         this.position = HORIZONTAL;
     }
 
-    public Shop(int percentage, int x, int y, int width_x, int height_y, String shopId, String shopName, boolean position) {
-        this(percentage, shopId, shopName);
-        this.x = x;
-        this.y = y;
-        this.position = position;
-    }
-
-    public void setShopId(String shopId) {
-        this.shopId = shopId;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public String getShopId() {
         return shopId;
+    }
+
+    public String getAliasOrShopId() {
+        return StringUtils.isBlank(shopIdAlias) ? shopId : shopIdAlias;
     }
 
     public String getShopName() {
@@ -79,23 +62,19 @@ public class Shop extends ColorHolder {
         return shopId + ", ";
     }
 
-    public boolean getPosition() {
+    public Layout getPosition() {
         return position;
     }
 
-    public void setCoordinatesAndLayout(String coordinatesString) throws Exception {
-        if (coordinatesString != null && !coordinatesString.equals("")) {
+    public void setCoordinatesAliasAndLayout(String coordinatesString) throws Exception {
+        if (StringUtils.isNotBlank(coordinatesString)) {
             String coordinates[] = coordinatesString.split(",");
             if (coordinates.length >= 2) {
                 x = Integer.parseInt(coordinates[0]);
                 y = Integer.parseInt(coordinates[1]);
-                if (coordinates.length == 3) {
-                    int intBool = Integer.parseInt(coordinates[2]);
-                    if (intBool == 1) {
-                        position = VERTICAL;
-                    } else {
-                        position = HORIZONTAL;
-                    }
+                position = Layout.valueOf(coordinates[2]);
+                if (coordinates.length == 4) {
+                    shopIdAlias = coordinates[3];
                 }
             } else {
                 throw new Exception(ManuLiczekMain.getParametrizedString("errorInCoordinates", Shop.class, shopId));
