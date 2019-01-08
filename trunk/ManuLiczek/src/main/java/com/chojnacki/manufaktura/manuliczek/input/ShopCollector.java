@@ -15,6 +15,7 @@ import java.util.*;
 
 import jxl.Sheet;
 import jxl.Workbook;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import static com.chojnacki.manufaktura.manuliczek.model.Level.FIRST;
@@ -22,6 +23,7 @@ import static com.chojnacki.manufaktura.manuliczek.model.Level.GROUND;
 import static com.chojnacki.manufaktura.manuliczek.model.Level.SECOND;
 import static com.chojnacki.manufaktura.manuliczek.model.Place.GALLERY;
 import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
+import static org.apache.commons.lang3.StringUtils.deleteWhitespace;
 
 /**
  *
@@ -62,40 +64,39 @@ public class ShopCollector {
         String companiesName;
         String cousineColumn = null;
         for (int i = 1; i <= sheet.getRows(); i++) {
-            shopId = sheet.getCell(inputDataHolder.getShopIdColumn() + i).getContents();
-            companiesName = sheet.getCell(inputDataHolder.getCompaniesName() + i).getContents();
-            percentageColumn = sheet.getCell(inputDataHolder.getPercentageColumn() + i).getContents();
-            if (ManuLiczekMain.getApplication().getPlace().isPatio()) {
-                cousineColumn = sheet.getCell(inputDataHolder.getCousineColumn() + i).getContents();
+            shopId = deleteWhitespace(sheet.getCell(inputDataHolder.getShopIdColumn() + i).getContents());
+            companiesName = deleteWhitespace(sheet.getCell(inputDataHolder.getCompaniesName() + i).getContents());
+            percentageColumn = deleteWhitespace(sheet.getCell(inputDataHolder.getPercentageColumn() + i).getContents());
+            if (ManuLiczekMain.getApplication().getPlace().isPatio()
+                    && hasCousinColumn(inputDataHolder.getCousineColumn(), sheet.getColumns())) {
+                cousineColumn = sheet.getCell(inputDataHolder.getCousineColumn() + i).getContents().trim();
             }
-            if (shopId != null) {
-                if(shopId.matches("H\\w{1,2}\\d{2,3}\\w?")) {
-                    shopCountInDocument++;
-                    if (shopId.matches("H[M|B][F|R]?\\d{2,3}")) {
-                        if (!"".equals(companiesName) && !"".equals(percentageColumn)) {
-                            shop = new Shop(shopId, companiesName);
-                            if (percentageColumn.endsWith("%")) {
-                                percentageColumn = percentageColumn.substring(0, percentageColumn.length() - 1);
-                            }
-                            try {
-                                shop.setPercentage(Integer.valueOf(percentageColumn));
-                            } catch (NumberFormatException exc) {
-                                logger.warn("Wrong value set in percentage column: " + percentageColumn);
-                            }
-                            shop.setCousine(cousineColumn);
-                            shops.put(shopId, shop);
-                            if (shopHasCoordinates(shopId, resources)) {
-                                shopsAllowed.add(shopId);
-                                shop.setCoordinatesAliasAndLayout((String) resources.getObject(shopId));
-                            } else {
-                                Level floor = getFloor(shopId);
-                                Place place = getPlace(shopId);
-                                if (floor.equals(ManuLiczekMain.getApplication().getFloor()) &&
-                                        place.equals(ManuLiczekMain.getApplication().getPlace())) {
-                                    logger.info("Shop without coordinates " + shopId + " on the floor " + floor
-                                            + " in place " + place);
-                                    shopAllFloorWithoutCoordinates.add(shopId);
-                                }
+            if(shopId.matches("H\\w{1,2}\\d{2,3}\\w?")) {
+                shopCountInDocument++;
+                if (shopId.matches("H[M|B][F|R]?\\d{2,3}")) {
+                    if (StringUtils.isNotBlank(companiesName) && StringUtils.isNotBlank(percentageColumn)) {
+                        shop = new Shop(shopId, companiesName);
+                        if (percentageColumn.endsWith("%")) {
+                            percentageColumn = percentageColumn.substring(0, percentageColumn.length() - 1);
+                        }
+                        try {
+                            shop.setPercentage(Integer.valueOf(percentageColumn));
+                        } catch (NumberFormatException exc) {
+                            logger.warn("Wrong value set in percentage column: " + percentageColumn);
+                        }
+                        shop.setCousine(cousineColumn);
+                        shops.put(shopId, shop);
+                        if (shopHasCoordinates(shopId, resources)) {
+                            shopsAllowed.add(shopId);
+                            shop.setCoordinatesAliasAndLayout((String) resources.getObject(shopId));
+                        } else {
+                            Level floor = getFloor(shopId);
+                            Place place = getPlace(shopId);
+                            if (floor.equals(ManuLiczekMain.getApplication().getFloor()) &&
+                                    place.equals(ManuLiczekMain.getApplication().getPlace())) {
+                                logger.info("Shop without coordinates " + shopId + " on the floor " + floor
+                                        + " in place " + place);
+                                shopAllFloorWithoutCoordinates.add(shopId);
                             }
                         }
                     }
@@ -103,6 +104,11 @@ public class ShopCollector {
             }
         }
         return shops;
+    }
+
+    private boolean hasCousinColumn(String cousineColumn, int columns) {
+        char column = cousineColumn.toLowerCase().charAt(0);
+        return column - 96 <= columns;
     }
 
     public Map<String, Shop> getShops() {

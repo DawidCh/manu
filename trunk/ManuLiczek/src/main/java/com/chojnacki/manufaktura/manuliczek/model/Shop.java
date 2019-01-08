@@ -22,7 +22,6 @@ public class Shop extends ColorHolder {
     private String shopName;
     private Layout position;
     private String cousine;
-    private String shopIdAlias;
 
     public Shop(String shopId, String shopName) {
         this.shopId = shopId;
@@ -39,10 +38,6 @@ public class Shop extends ColorHolder {
 
     public String getShopId() {
         return shopId;
-    }
-
-    public String getAliasOrShopId() {
-        return StringUtils.isBlank(shopIdAlias) ? shopId : shopIdAlias;
     }
 
     public String getShopName() {
@@ -73,9 +68,6 @@ public class Shop extends ColorHolder {
                 x = Integer.parseInt(coordinates[0]);
                 y = Integer.parseInt(coordinates[1]);
                 position = Layout.valueOf(coordinates[2]);
-                if (coordinates.length == 4) {
-                    shopIdAlias = coordinates[3];
-                }
             } else {
                 throw new Exception(ManuLiczekMain.getParametrizedString("errorInCoordinates", Shop.class, shopId));
             }
