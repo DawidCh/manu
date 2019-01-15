@@ -23,7 +23,7 @@ import static com.chojnacki.manufaktura.manuliczek.model.Level.GROUND;
 import static com.chojnacki.manufaktura.manuliczek.model.Level.SECOND;
 import static com.chojnacki.manufaktura.manuliczek.model.Place.GALLERY;
 import static com.chojnacki.manufaktura.manuliczek.model.Place.PATIO;
-import static org.apache.commons.lang3.StringUtils.deleteWhitespace;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 /**
  *
@@ -64,9 +64,9 @@ public class ShopCollector {
         String companiesName;
         String cousineColumn = null;
         for (int i = 1; i <= sheet.getRows(); i++) {
-            shopId = deleteWhitespace(sheet.getCell(inputDataHolder.getShopIdColumn() + i).getContents());
-            companiesName = deleteWhitespace(sheet.getCell(inputDataHolder.getCompaniesName() + i).getContents());
-            percentageColumn = deleteWhitespace(sheet.getCell(inputDataHolder.getPercentageColumn() + i).getContents());
+            shopId = trim(sheet.getCell(inputDataHolder.getShopIdColumn() + i).getContents());
+            companiesName = trim(sheet.getCell(inputDataHolder.getCompaniesName() + i).getContents());
+            percentageColumn = trim(sheet.getCell(inputDataHolder.getPercentageColumn() + i).getContents());
             if (ManuLiczekMain.getApplication().getPlace().isPatio()
                     && hasCousinColumn(inputDataHolder.getCousineColumn(), sheet.getColumns())) {
                 cousineColumn = sheet.getCell(inputDataHolder.getCousineColumn() + i).getContents().trim();
